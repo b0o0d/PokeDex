@@ -16,6 +16,9 @@
 		9F06B9832C25BF3000335721 /* PokeDexTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F06B9822C25BF3000335721 /* PokeDexTests.swift */; };
 		9F06B98D2C25BF3000335721 /* PokeDexUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F06B98C2C25BF3000335721 /* PokeDexUITests.swift */; };
 		9F06B98F2C25BF3000335721 /* PokeDexUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F06B98E2C25BF3000335721 /* PokeDexUITestsLaunchTests.swift */; };
+		9F06B99D2C25BF6600335721 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 9F06B99C2C25BF6600335721 /* SnapKit */; };
+		9F06B9A02C25BFDE00335721 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 9F06B99F2C25BFDE00335721 /* SDWebImage */; };
+		9F06B9A32C25C01900335721 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 9F06B9A22C25C01900335721 /* Alamofire */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +59,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9F06B9A32C25C01900335721 /* Alamofire in Frameworks */,
+				9F06B9A02C25BFDE00335721 /* SDWebImage in Frameworks */,
+				9F06B99D2C25BF6600335721 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -143,6 +149,11 @@
 			dependencies = (
 			);
 			name = PokeDex;
+			packageProductDependencies = (
+				9F06B99C2C25BF6600335721 /* SnapKit */,
+				9F06B99F2C25BFDE00335721 /* SDWebImage */,
+				9F06B9A22C25C01900335721 /* Alamofire */,
+			);
 			productName = PokeDex;
 			productReference = 9F06B9682C25BF2F00335721 /* PokeDex.app */;
 			productType = "com.apple.product-type.application";
@@ -215,6 +226,11 @@
 				Base,
 			);
 			mainGroup = 9F06B95F2C25BF2F00335721;
+			packageReferences = (
+				9F06B99B2C25BF6600335721 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				9F06B99E2C25BFDE00335721 /* XCRemoteSwiftPackageReference "SDWebImage" */,
+				9F06B9A12C25C01900335721 /* XCRemoteSwiftPackageReference "Alamofire" */,
+			);
 			productRefGroup = 9F06B9692C25BF2F00335721 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -607,6 +623,51 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		9F06B99B2C25BF6600335721 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
+		9F06B99E2C25BFDE00335721 /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImage.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.19.3;
+			};
+		};
+		9F06B9A12C25C01900335721 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.9.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		9F06B99C2C25BF6600335721 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9F06B99B2C25BF6600335721 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		9F06B99F2C25BFDE00335721 /* SDWebImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9F06B99E2C25BFDE00335721 /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			productName = SDWebImage;
+		};
+		9F06B9A22C25C01900335721 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9F06B9A12C25C01900335721 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 9F06B9602C25BF2F00335721 /* Project object */;
 }
