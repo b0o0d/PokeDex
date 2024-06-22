@@ -24,6 +24,7 @@
 		9F06B9AF2C26BE5500335721 /* PokemonAPIClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F06B9AE2C26BE5500335721 /* PokemonAPIClientTests.swift */; };
 		9FF512CC2C26FF9500D88F26 /* PokemonDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF512CB2C26FF9500D88F26 /* PokemonDisplay.swift */; };
 		9FF512D02C27047300D88F26 /* PokemonDisplayAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF512CF2C27047300D88F26 /* PokemonDisplayAdapter.swift */; };
+		9FF512D62C270B0D00D88F26 /* PokeDex.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9FF512D42C270B0D00D88F26 /* PokeDex.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +63,7 @@
 		9F06B9AE2C26BE5500335721 /* PokemonAPIClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonAPIClientTests.swift; sourceTree = "<group>"; };
 		9FF512CB2C26FF9500D88F26 /* PokemonDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonDisplay.swift; sourceTree = "<group>"; };
 		9FF512CF2C27047300D88F26 /* PokemonDisplayAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonDisplayAdapter.swift; sourceTree = "<group>"; };
+		9FF512D52C270B0D00D88F26 /* PokeDex.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PokeDex.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +123,7 @@
 				9F06B9AA2C25DE8E00335721 /* PokemonModel.swift */,
 				9F06B9AC2C25E71000335721 /* PokemonAPIClient.swift */,
 				9FF512CB2C26FF9500D88F26 /* PokemonDisplay.swift */,
+				9FF512D42C270B0D00D88F26 /* PokeDex.xcdatamodeld */,
 				9FF512CF2C27047300D88F26 /* PokemonDisplayAdapter.swift */,
 				9F06B9712C25BF2F00335721 /* Main.storyboard */,
 				9F06B9742C25BF3000335721 /* Assets.xcassets */,
@@ -293,6 +296,7 @@
 				9F06B9AD2C25E71000335721 /* PokemonAPIClient.swift in Sources */,
 				9FF512CC2C26FF9500D88F26 /* PokemonDisplay.swift in Sources */,
 				9F06B96C2C25BF2F00335721 /* AppDelegate.swift in Sources */,
+				9FF512D62C270B0D00D88F26 /* PokeDex.xcdatamodeld in Sources */,
 				9F06B9AB2C25DE8E00335721 /* PokemonModel.swift in Sources */,
 				9FF512D02C27047300D88F26 /* PokemonDisplayAdapter.swift in Sources */,
 				9F06B96E2C25BF2F00335721 /* SceneDelegate.swift in Sources */,
@@ -690,6 +694,20 @@
 			productName = Alamofire;
 		};
 /* End XCSwiftPackageProductDependency section */
+
+/* Begin XCVersionGroup section */
+		9FF512D42C270B0D00D88F26 /* PokeDex.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				9FF512D52C270B0D00D88F26 /* PokeDex.xcdatamodel */,
+			);
+			currentVersion = 9FF512D52C270B0D00D88F26 /* PokeDex.xcdatamodel */;
+			name = PokeDex.xcdatamodeld;
+			path = /Users/bo0od/Desktop/BoChiu/interview/2024/gogolook/Bo/PokeDex/PokeDex/PokeDex.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 9F06B9602C25BF2F00335721 /* Project object */;
 }

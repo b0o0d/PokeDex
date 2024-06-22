@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22757" systemVersion="23E224" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
+    <entity name="CoreDataPokemonDisplay" representedClassName="CoreDataPokemonDisplay" syncable="YES">
+        <attribute name="image" optional="YES" attributeType="Binary"/>
+        <attribute name="imageURL" optional="YES" attributeType="String"/>
+        <attribute name="isFavorite" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="name" attributeType="String"/>
+        <attribute name="speciesID" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="types" attributeType="Transformable" customClassName="[String]"/>
+        <relationship name="evolutionChain" maxCount="1" deletionRule="Nullify" destinationEntity="CoreDataPokemonEvolutionChain"/>
+        <relationship name="flavorTextEntries" toMany="YES" deletionRule="Nullify" destinationEntity="CoreDataPokemonFlavorText"/>
+    </entity>
+    <entity name="CoreDataPokemonEvolution" representedClassName="CoreDataPokemonEvolution" syncable="YES">
+        <relationship name="evolvesTo" toMany="YES" deletionRule="Nullify" destinationEntity="CoreDataPokemonEvolution"/>
+    </entity>
+    <entity name="CoreDataPokemonEvolutionChain" representedClassName="CoreDataPokemonEvolutionChain" syncable="YES">
+        <attribute name="id" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="evolvesTo" maxCount="1" deletionRule="Nullify" destinationEntity="CoreDataPokemonEvolution"/>
+    </entity>
+    <entity name="CoreDataPokemonFlavorText" representedClassName="CoreDataPokemonFlavorText" syncable="YES">
+        <attribute name="flavorText" attributeType="String"/>
+        <attribute name="language" attributeType="String"/>
+        <attribute name="version" attributeType="String"/>
+    </entity>
+</model>
