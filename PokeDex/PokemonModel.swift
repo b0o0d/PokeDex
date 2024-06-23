@@ -113,6 +113,13 @@ struct PokemonFlavorText: Decodable {
         let version = try container.nestedContainer(keyedBy: VersionCodingKeys.self, forKey: .version)
         self.version = try version.decode(String.self, forKey: .name)
     }
+    
+    init(flavorText: String, language: String, version: String) {
+        self.flavorText = flavorText
+        self.language = language
+        self.version = version
+    }
+
 }
 
 struct PokemonEvolutionChain: Decodable {
@@ -131,4 +138,9 @@ struct PokemonEvolution: Decodable {
     enum CodingKeys: String, CodingKey {
         case evolvesTo = "evolves_to"
     }
+    
+    init(evolvesTo: [PokemonEvolution]) {
+        self.evolvesTo = evolvesTo
+    }
+
 }
