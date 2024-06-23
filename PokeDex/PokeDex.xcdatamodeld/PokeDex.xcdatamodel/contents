@@ -11,7 +11,8 @@
         <relationship name="flavorTextEntries" toMany="YES" deletionRule="Nullify" destinationEntity="CoreDataPokemonFlavorText"/>
     </entity>
     <entity name="CoreDataPokemonEvolution" representedClassName="CoreDataPokemonEvolution" syncable="YES">
-        <relationship name="evolvesTo" toMany="YES" deletionRule="Nullify" destinationEntity="CoreDataPokemonEvolution"/>
+        <attribute name="speciesName" attributeType="String"/>
+        <relationship name="evolvesTo" toMany="YES" deletionRule="Nullify" destinationEntity="CoreDataPokemonEvolution" inverseName="evolvesTo" inverseEntity="CoreDataPokemonEvolution"/>
     </entity>
     <entity name="CoreDataPokemonEvolutionChain" representedClassName="CoreDataPokemonEvolutionChain" syncable="YES">
         <attribute name="id" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>

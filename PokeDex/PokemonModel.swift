@@ -133,13 +133,28 @@ struct PokemonEvolutionChain: Decodable {
 }
 
 struct PokemonEvolution: Decodable {
+    let speciesName: String
     let evolvesTo: [PokemonEvolution]
     
     enum CodingKeys: String, CodingKey {
+        case species
         case evolvesTo = "evolves_to"
     }
     
-    init(evolvesTo: [PokemonEvolution]) {
+    enum SpeciesCodingKeys: String, CodingKey {
+        case name
+    }
+    
+    init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let species = try container.nestedContainer(keyedBy: SpeciesCodingKeys.self, forKey: .species)
+        speciesName = try species.decode(String.self, forKey: .name)
+        
+        evolvesTo = try container.decode([PokemonEvolution].self, forKey: .evolvesTo)
+    }
+    
+    init(speciesName: String, evolvesTo: [PokemonEvolution]) {
+        self.speciesName = speciesName
         self.evolvesTo = evolvesTo
     }
 
