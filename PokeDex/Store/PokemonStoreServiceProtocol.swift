@@ -8,9 +8,14 @@
 import Foundation
 
 protocol PokemonStoreServiceProtocol {
-    func fetchPokemonDisplayList(offset: Int, limit: Int, completion: ((Result<[PokemonDisplay], Error>) -> Void)?)
-    func fetchPokemonDisplay(_ pokemonDisplay: PokemonDisplay, completion: ((Result<PokemonDisplay, Error>) -> Void)?)
-    func addPokemonDisplay(_ pokemonDisplay: PokemonDisplay, completion: ((Result<Void, Error>) -> Void)?)
-    func updatePokemonDisplay(_ pokemonDisplay: PokemonDisplay, completion: ((Result<Void, Error>) -> Void)?)
-    func saveChanges(completion: ((Result<Void, Error>) -> Void)?)
+    associatedtype T
+    
+    func fetchPokemonDisplayList(offset: Int, limit: Int) throws -> [PokemonDisplay]
+    func addPokemonDisplay(_ pokemonDisplay: PokemonDisplay) async throws -> T
+    func updatePokemonDisplay(_ pokemonDisplay: PokemonDisplay) async throws -> T
+}
+
+enum PokemonStoreError: Error {
+    case pokemonDisplayNotFound
+    case alreadyExists
 }

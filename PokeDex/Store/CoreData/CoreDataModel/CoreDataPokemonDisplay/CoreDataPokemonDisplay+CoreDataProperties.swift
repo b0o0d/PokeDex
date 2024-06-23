@@ -50,7 +50,7 @@ extension CoreDataPokemonDisplay : Identifiable {
 
 extension CoreDataPokemonDisplay {
     @nonobjc public class func fetchRequest(offset: Int, limit: Int) -> NSFetchRequest<CoreDataPokemonDisplay> {
-        var request = NSFetchRequest<CoreDataPokemonDisplay>(entityName: "CoreDataPokemonDisplay")
+        let request = NSFetchRequest<CoreDataPokemonDisplay>(entityName: "CoreDataPokemonDisplay")
         request.sortDescriptors = [NSSortDescriptor(key: "speciesID", ascending: true)]
         request.fetchOffset = offset
         request.fetchLimit = limit
