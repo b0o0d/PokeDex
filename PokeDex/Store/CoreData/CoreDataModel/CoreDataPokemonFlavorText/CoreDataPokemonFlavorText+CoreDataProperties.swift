@@ -16,8 +16,9 @@ extension CoreDataPokemonFlavorText {
         return NSFetchRequest<CoreDataPokemonFlavorText>(entityName: "CoreDataPokemonFlavorText")
     }
 
-    @NSManaged public var flavorText: String?
+    @NSManaged public var flavorText: Data?
     @NSManaged public var language: String?
+    @NSManaged public var speciesID: Int32
     @NSManaged public var version: String?
 
 }
