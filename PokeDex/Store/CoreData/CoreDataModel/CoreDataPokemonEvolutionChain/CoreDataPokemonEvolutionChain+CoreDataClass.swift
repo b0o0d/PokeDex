@@ -10,28 +10,26 @@ import Foundation
 import CoreData
 
 @objc(CoreDataPokemonEvolutionChain)
-public class CoreDataPokemonEvolutionChain: NSManagedObject {
-    static func findOrCreatePokemonEvolutionChain(matching pokemonEvolutionChain: PokemonEvolutionChain, in context: NSManagedObjectContext) throws -> CoreDataPokemonEvolutionChain {
-        let request: NSFetchRequest<CoreDataPokemonEvolutionChain> = CoreDataPokemonEvolutionChain.fetchRequest()
-        request.predicate = NSPredicate(format: "id = %d", pokemonEvolutionChain.id)
-        do {
-            let matches = try context.fetch(request)
-            if matches.count > 0 {
-                assert(matches.count == 1, "CoreDataPokemonEvolutionChain.findOrCreatePokemonEvolutionChain -- database inconsistency")
-                return matches[0]
-            }
-        } catch {
-            throw error
+public class CoreDataPokemonEvolutionChain: NSManagedObject {    
+    static func instance(pokemonEvolutionChain: PokemonEvolutionChain, context: NSManagedObjectContext) -> CoreDataPokemonEvolutionChain {
+        guard let coreDataPokemonEvolutionChain = NSEntityDescription.insertNewObject(forEntityName: "CoreDataPokemonEvolutionChain", into: context) as? CoreDataPokemonEvolutionChain else {
+            fatalError("Unable to create CoreDataPokemonEvolutionChain instance")
         }
         
-        return CoreDataPokemonEvolutionChain(matching: pokemonEvolutionChain, context: context)
+        coreDataPokemonEvolutionChain.id = Int32(pokemonEvolutionChain.id)
+        coreDataPokemonEvolutionChain.evolvesTo = CoreDataPokemonEvolution.instance(pokemonEvolution: pokemonEvolutionChain.evolvesTo, context: context)
+        return coreDataPokemonEvolutionChain
     }
     
-    init(matching pokemonEvolutionChain: PokemonEvolutionChain, context: NSManagedObjectContext) {
-        let entity = NSEntityDescription.entity(forEntityName: "CoreDataPokemonEvolutionChain", in: context)!
-        super.init(entity: entity, insertInto: context)
+    static func existingInstance(pokemonEvolutionChain: PokemonEvolutionChain, context: NSManagedObjectContext) -> CoreDataPokemonEvolutionChain? {
+        let fetchRequest: NSFetchRequest<CoreDataPokemonEvolutionChain> = CoreDataPokemonEvolutionChain.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "id == %d", pokemonEvolutionChain.id)
         
-        self.id = Int32(pokemonEvolutionChain.id)
-        self.evolvesTo = try! CoreDataPokemonEvolution.findOrCreatePokemonEvolution(matching: pokemonEvolutionChain.evolvesTo, in: context)
+        do {
+            let result = try context.fetch(fetchRequest)
+            return result.first
+        } catch {
+            return nil
+        }
     }
 }

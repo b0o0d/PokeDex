@@ -2,7 +2,7 @@
 //  CoreDataPokemonEvolution+CoreDataProperties.swift
 //  PokeDex
 //
-//  Created by Bo Chiu on 2024/6/23.
+//  Created by Bo Chiu on 2024/6/24.
 //
 //
 
@@ -18,6 +18,7 @@ extension CoreDataPokemonEvolution {
 
     @NSManaged public var speciesName: String?
     @NSManaged public var evolvesTo: NSSet?
+    @NSManaged public var evolvesFrom: NSSet?
 
 }
 
@@ -35,6 +36,23 @@ extension CoreDataPokemonEvolution {
 
     @objc(removeEvolvesTo:)
     @NSManaged public func removeFromEvolvesTo(_ values: NSSet)
+
+}
+
+// MARK: Generated accessors for evolvesFrom
+extension CoreDataPokemonEvolution {
+
+    @objc(addEvolvesFromObject:)
+    @NSManaged public func addToEvolvesFrom(_ value: CoreDataPokemonEvolution)
+
+    @objc(removeEvolvesFromObject:)
+    @NSManaged public func removeFromEvolvesFrom(_ value: CoreDataPokemonEvolution)
+
+    @objc(addEvolvesFrom:)
+    @NSManaged public func addToEvolvesFrom(_ values: NSSet)
+
+    @objc(removeEvolvesFrom:)
+    @NSManaged public func removeFromEvolvesFrom(_ values: NSSet)
 
 }
 

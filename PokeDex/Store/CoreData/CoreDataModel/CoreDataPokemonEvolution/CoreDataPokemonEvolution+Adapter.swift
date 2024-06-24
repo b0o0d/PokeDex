@@ -12,10 +12,8 @@ extension CoreDataPokemonEvolution {
         guard let coreDataEvolvesTo = evolvesTo as? Set<CoreDataPokemonEvolution>, coreDataEvolvesTo.count > 0 else {
             return PokemonEvolution(speciesName: speciesName ?? "", evolvesTo: [])
         }
-        var evolvesToArray: [PokemonEvolution] = []
-        for evolution in coreDataEvolvesTo {
-            evolvesToArray.append(evolution.toPokemonEvolution())
-        }
+        let evolvesToArray = coreDataEvolvesTo.compactMap { $0.toPokemonEvolution() }
+        
         return PokemonEvolution(speciesName: speciesName ?? "", evolvesTo: evolvesToArray)
     }
 }
