@@ -11,30 +11,31 @@ import CoreData
 
 @objc(CoreDataPokemonFlavorText)
 public class CoreDataPokemonFlavorText: NSManagedObject {
-    static func findOrCreatePokemonFlavorText(matching pokemonFlavorText: PokemonFlavorText, in context: NSManagedObjectContext) throws -> CoreDataPokemonFlavorText {
-        let request: NSFetchRequest<CoreDataPokemonFlavorText> = CoreDataPokemonFlavorText.fetchRequest()
-        request.predicate = NSPredicate(format: "flavorText = %@ AND language = %@ AND version = %@", pokemonFlavorText.flavorText, pokemonFlavorText.language, pokemonFlavorText.version)
-        
-        do {
-            let matches = try context.fetch(request)
-            if matches.count > 0 {
-                assert(matches.count == 1, "CoreDataPokemonFlavorText.findOrCreatePokemonFlavorText -- database inconsistency")
-                return matches[0]
-            }
-        } catch {
-            throw error
+    static func instance(speciesID: Int, pokemonFlavorText: PokemonFlavorText, context: NSManagedObjectContext) -> CoreDataPokemonFlavorText {
+        guard let coreDataPokemonFlavorText = NSEntityDescription.insertNewObject(forEntityName: "CoreDataPokemonFlavorText", into: context) as? CoreDataPokemonFlavorText else {
+            fatalError("Unable to create CoreDataPokemonFlavorText instance")
         }
         
-        let pokemonFlavorTextEntity = CoreDataPokemonFlavorText(pokemonFlavorText: pokemonFlavorText, context: context)
-        return pokemonFlavorTextEntity
+        coreDataPokemonFlavorText.flavorText = pokemonFlavorText.flavorText.data(using: .utf8)
+        coreDataPokemonFlavorText.language = pokemonFlavorText.language
+        coreDataPokemonFlavorText.speciesID = Int32(speciesID)
+        coreDataPokemonFlavorText.version = pokemonFlavorText.version
+        
+        return coreDataPokemonFlavorText
     }
     
-    init(pokemonFlavorText: PokemonFlavorText, context: NSManagedObjectContext) {
-        let entity = NSEntityDescription.entity(forEntityName: "CoreDataPokemonFlavorText", in: context)!
-        super.init(entity: entity, insertInto: context)
+    static func existingInstance(speciesID: Int, pokemonFlavorText: PokemonFlavorText, context: NSManagedObjectContext) -> CoreDataPokemonFlavorText? {
+        let fetchRequest: NSFetchRequest<CoreDataPokemonFlavorText> = CoreDataPokemonFlavorText.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "speciesID == %d && language == %@ AND version == %@", speciesID, pokemonFlavorText.language, pokemonFlavorText.version)
         
-        self.flavorText = pokemonFlavorText.flavorText
-        self.language = pokemonFlavorText.language
-        self.version = pokemonFlavorText.version
+        do {
+            let result = try context.fetch(fetchRequest)
+            if result.first == nil {
+                fatalError("Unable to fetch CoreDataPokemonFlavorText instance")
+            }
+            return result.first
+        } catch {
+            return nil
+        }
     }
 }
