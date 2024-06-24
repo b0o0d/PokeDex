@@ -9,9 +9,9 @@ import Foundation
 import Alamofire
 
 class PokemonAPIClient {
-    static private(set) var next: String?
+    private(set) var next: String?
     
-    static func fetchRoughPokemons(offset: Int, limit: Int = 20) async -> PokemonRoughResponse? {
+    func fetchRoughPokemons(offset: Int, limit: Int = 20) async -> PokemonRoughResponse? {
         let url = "https://pokeapi.co/api/v2/pokemon?offset=\(offset)&limit=\(limit)"
         let value = try? await AF.request(url).serializingDecodable(PokemonRoughResponse.self).value
         if let value = value {
@@ -21,7 +21,7 @@ class PokemonAPIClient {
         return nil
     }
     
-    static func fetchNextRoughPokemons() async -> PokemonRoughResponse? {
+    func fetchNextRoughPokemons() async -> PokemonRoughResponse? {
         guard let next = next else {
             return await fetchRoughPokemons(offset: 0)
         }
@@ -31,7 +31,7 @@ class PokemonAPIClient {
         return value
     }
     
-    static func fetchPokemonDetail(id: Int) async -> PokemonDetail? {
+    func fetchPokemonDetail(id: Int) async -> PokemonDetail? {
         let url = "https://pokeapi.co/api/v2/pokemon/\(id)"
         let value = try? await AF.request(url).serializingDecodable(PokemonDetail.self).value
         return value
@@ -39,12 +39,12 @@ class PokemonAPIClient {
     
     // 不能 by id, 因為有些 Pokemon 對 species 的請求和 PokemonGeneralResult.id 不同
     // 因此必須改為同步在 fetchPokemonDetail 後才能請求
-    static func fetchPokemonSpecies(url: String) async -> PokemonSpecies? {
+    func fetchPokemonSpecies(url: String) async -> PokemonSpecies? {
         let value = try? await AF.request(url).serializingDecodable(PokemonSpecies.self).value
         return value
     }
     
-    static func pokemonEvolutionChain(url: String) async -> PokemonEvolutionChain? {
+    func pokemonEvolutionChain(url: String) async -> PokemonEvolutionChain? {
         let value = try? await AF.request(url).serializingDecodable(PokemonEvolutionChain.self).value
         return value
     }
