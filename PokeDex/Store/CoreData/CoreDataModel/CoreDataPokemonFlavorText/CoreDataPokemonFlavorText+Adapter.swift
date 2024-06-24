@@ -9,15 +9,12 @@ import Foundation
 
 extension CoreDataPokemonFlavorText {
     func toPokemonFlavorText() -> PokemonFlavorText {
-        return PokemonFlavorText(flavorText: flavorText ?? "",
-                                 language: language ?? "",
-                                 version: version ?? ""
+        guard let data = flavorText, let text = String(data: data, encoding: .utf8), let lang = language, let ver = version else {
+            return PokemonFlavorText(flavorText: "", language: "", version: "")
+        }
+        return PokemonFlavorText(flavorText: text,
+                                 language: lang,
+                                 version: ver
         )
-    }
-}
-
-extension Set where Element == CoreDataPokemonFlavorText {
-    func toPokemonFlavorTexts() -> [PokemonFlavorText] {
-        return map { $0.toPokemonFlavorText() }
     }
 }

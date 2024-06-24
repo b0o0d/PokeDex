@@ -12,12 +12,13 @@ class PokemonDisplayAdapter {
                       pokemonEvolutionChain: PokemonEvolutionChain,
                       pokemonSpecies: PokemonSpecies
                 ) -> PokemonDisplay {
+        let enFlavorText = pokemonSpecies.flavorTextEntries.last { $0.language == "en" }!
         return PokemonDisplay(speciesID: pokemonDetail.species.id,
                               name: pokemonDetail.species.name,
                               types: pokemonDetail.types,
                               imageURL: pokemonDetail.image,
                               evolutionChain: pokemonEvolutionChain,
-                              flavorTextEntries: pokemonSpecies.flavorTextEntries
+                              flavorText: enFlavorText
                 )
     }
 }

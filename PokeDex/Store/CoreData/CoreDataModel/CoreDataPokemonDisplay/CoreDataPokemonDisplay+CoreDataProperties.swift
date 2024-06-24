@@ -23,24 +23,7 @@ extension CoreDataPokemonDisplay {
     @NSManaged public var speciesID: Int32
     @NSManaged public var types: [String]?
     @NSManaged public var evolutionChain: CoreDataPokemonEvolutionChain?
-    @NSManaged public var flavorTextEntries: NSSet?
-
-}
-
-// MARK: Generated accessors for flavorTextEntries
-extension CoreDataPokemonDisplay {
-
-    @objc(addFlavorTextEntriesObject:)
-    @NSManaged public func addToFlavorTextEntries(_ value: CoreDataPokemonFlavorText)
-
-    @objc(removeFlavorTextEntriesObject:)
-    @NSManaged public func removeFromFlavorTextEntries(_ value: CoreDataPokemonFlavorText)
-
-    @objc(addFlavorTextEntries:)
-    @NSManaged public func addToFlavorTextEntries(_ values: NSSet)
-
-    @objc(removeFlavorTextEntries:)
-    @NSManaged public func removeFromFlavorTextEntries(_ values: NSSet)
+    @NSManaged public var flavorText: CoreDataPokemonFlavorText?
 
 }
 

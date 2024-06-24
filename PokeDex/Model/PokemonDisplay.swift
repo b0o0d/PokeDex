@@ -15,7 +15,7 @@ protocol PokemonDisplayable {
     var imageURL: String? { get }
     var image: Data? { get }
     var evolutionChain: PokemonEvolutionChain { get }
-    var flavorTextEntries: [PokemonFlavorText] { get }
+    var flavorText: PokemonFlavorText { get }
     var isFavorite: Bool { get set }
 }
 
@@ -26,7 +26,7 @@ class PokemonDisplay: PokemonDisplayable {
     let imageURL: String?
     var image: Data?
     let evolutionChain: PokemonEvolutionChain
-    let flavorTextEntries: [PokemonFlavorText]
+    let flavorText: PokemonFlavorText
     var isFavorite: Bool
     
     var coreDataObjectID: NSManagedObjectID?
@@ -37,7 +37,7 @@ class PokemonDisplay: PokemonDisplayable {
          imageURL: String?,
          image: Data? = nil,
          evolutionChain: PokemonEvolutionChain, 
-         flavorTextEntries: [PokemonFlavorText],
+         flavorText: PokemonFlavorText,
          isFavorite: Bool = false,
          coreDataObjectID: NSManagedObjectID? = nil
     ) {
@@ -47,7 +47,7 @@ class PokemonDisplay: PokemonDisplayable {
         self.imageURL = imageURL
         self.image = image
         self.evolutionChain = evolutionChain
-        self.flavorTextEntries = flavorTextEntries
+        self.flavorText = flavorText
         self.isFavorite = isFavorite
         self.coreDataObjectID = coreDataObjectID
     }

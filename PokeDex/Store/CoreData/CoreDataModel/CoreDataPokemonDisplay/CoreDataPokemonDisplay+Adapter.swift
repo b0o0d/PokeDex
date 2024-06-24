@@ -12,12 +12,10 @@ extension CoreDataPokemonDisplay {
         guard
             let coreDataEvolutionChain = evolutionChain,
             let evolutionChain = coreDataEvolutionChain.toPokemonEvolutionChain(),
-            let coreDataPokemonFlavorTextSet = flavorTextEntries as? Set<CoreDataPokemonFlavorText>
+            let coreDataFlavorText = flavorText
         else {
             return nil
         }
-        
-        let flavorTextEntries = coreDataPokemonFlavorTextSet.toPokemonFlavorTexts()
         
         return PokemonDisplay(speciesID: Int(speciesID),
                               name: name ?? "",
@@ -25,7 +23,7 @@ extension CoreDataPokemonDisplay {
                               imageURL: imageURL,
                               image: image,
                               evolutionChain: evolutionChain,
-                              flavorTextEntries: flavorTextEntries,
+                              flavorText: coreDataFlavorText.toPokemonFlavorText(),
                               isFavorite: isFavorite,
                               coreDataObjectID: objectID.isTemporaryID ? nil : objectID
         )

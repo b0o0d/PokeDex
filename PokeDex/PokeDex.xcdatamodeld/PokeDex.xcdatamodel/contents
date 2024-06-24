@@ -8,7 +8,7 @@
         <attribute name="speciesID" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="types" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
         <relationship name="evolutionChain" maxCount="1" deletionRule="Nullify" destinationEntity="CoreDataPokemonEvolutionChain"/>
-        <relationship name="flavorTextEntries" toMany="YES" deletionRule="Nullify" destinationEntity="CoreDataPokemonFlavorText"/>
+        <relationship name="flavorText" maxCount="1" deletionRule="Nullify" destinationEntity="CoreDataPokemonFlavorText"/>
     </entity>
     <entity name="CoreDataPokemonEvolution" representedClassName="CoreDataPokemonEvolution" syncable="YES">
         <attribute name="speciesName" attributeType="String"/>
