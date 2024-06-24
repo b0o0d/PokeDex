@@ -9,10 +9,22 @@ import Foundation
 
 protocol PokemonStoreServiceProtocol {
     associatedtype T
+    associatedtype U
+    associatedtype V
     
     func fetchPokemonDisplayList(offset: Int, limit: Int) throws -> [PokemonDisplay]
-    func addPokemonDisplay(_ pokemonDisplay: PokemonDisplay) async throws -> T
-    func updatePokemonDisplay(_ pokemonDisplay: PokemonDisplay) async throws -> T
+    @discardableResult
+    func addPokemonDisplay(_ pokemonDisplay: PokemonDisplay) throws -> T
+    @discardableResult
+    func updatePokemonDisplay(_ pokemonDisplay: PokemonDisplay) throws -> T
+    
+    @discardableResult
+    func addPokemonEvolutionChain(_ evolutionChain: PokemonEvolutionChain) throws -> U
+    
+    @discardableResult
+    func addPokemonFlavorText(_ flavorText: PokemonFlavorText, speciesID: Int) throws -> V
+    
+    func saveContext()
 }
 
 enum PokemonStoreError: Error {
