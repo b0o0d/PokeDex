@@ -8,7 +8,11 @@
 import Foundation
 
 class PokemonCoreDataStoreService {
-    private let coreDataStack = CoreDataStack.shared
+    private let coreDataStack: CoreDataStack
+    
+    init(coreDataStack: CoreDataStack = .shared) {
+        self.coreDataStack = coreDataStack
+    }
     
     private func fetchCoreDataPokemonDisplayList(offset: Int, limit: Int) throws -> [CoreDataPokemonDisplay] {
         let fetchRequest = CoreDataPokemonDisplay.fetchRequest(offset: offset, limit: limit)

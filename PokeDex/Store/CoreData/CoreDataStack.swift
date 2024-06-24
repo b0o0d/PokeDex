@@ -11,20 +11,22 @@ import CoreData
 class CoreDataStack {
     static let shared = CoreDataStack()
     
-    private init() {}
-    
-    lazy var persistentContainer: NSPersistentContainer = {
-        let container = NSPersistentContainer(name: "PokeDex")
-        container.loadPersistentStores { description, error in
-            if let error = error {
-                fatalError("CoreDataStack: Unable to load persistent stores: \(error)")
-            }
-        }
-        return container
-    }()
+    let persistentContainer: NSPersistentContainer
     
     var viewContext: NSManagedObjectContext {
         return persistentContainer.viewContext
+    }
+
+    init(inMemory: Bool = false) {
+        persistentContainer = NSPersistentContainer(name: "PokeDex")
+        if inMemory {
+            persistentContainer.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
+        }
+        persistentContainer.loadPersistentStores(completionHandler: { _, error in
+            if let error = error as NSError? {
+                fatalError("CoreDataStack: Unable to load persistent stores: \(error), \(error.userInfo)")
+            }
+        })
     }
     
     func saveContext() {
