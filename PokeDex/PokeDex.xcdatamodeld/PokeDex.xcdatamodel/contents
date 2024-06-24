@@ -6,7 +6,7 @@
         <attribute name="isFavorite" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="name" attributeType="String"/>
         <attribute name="speciesID" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="types" attributeType="Transformable" customClassName="[String]"/>
+        <attribute name="types" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
         <relationship name="evolutionChain" maxCount="1" deletionRule="Nullify" destinationEntity="CoreDataPokemonEvolutionChain"/>
         <relationship name="flavorTextEntries" toMany="YES" deletionRule="Nullify" destinationEntity="CoreDataPokemonFlavorText"/>
     </entity>
