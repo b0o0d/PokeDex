@@ -13,7 +13,9 @@ import CoreData
 public class CoreDataPokemonDisplay: NSManagedObject {
     static func instance(pokemonDisplay: PokemonDisplay, context: NSManagedObjectContext) -> CoreDataPokemonDisplay {
         context.performAndWait {
-            let coreDataPokemonDisplay = CoreDataPokemonDisplay(context: context)
+            guard let coreDataPokemonDisplay = NSEntityDescription.insertNewObject(forEntityName: "CoreDataPokemonDisplay", into: context) as? CoreDataPokemonDisplay else {
+                fatalError("Unable to create CoreDataPokemonDisplay instance")
+            }
             
             coreDataPokemonDisplay.speciesID = Int32(pokemonDisplay.speciesID)
             coreDataPokemonDisplay.name = pokemonDisplay.name

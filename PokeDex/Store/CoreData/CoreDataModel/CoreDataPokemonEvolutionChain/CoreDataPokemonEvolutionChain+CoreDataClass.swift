@@ -13,8 +13,9 @@ import CoreData
 public class CoreDataPokemonEvolutionChain: NSManagedObject {    
     static func instance(pokemonEvolutionChain: PokemonEvolutionChain, context: NSManagedObjectContext) -> CoreDataPokemonEvolutionChain {
         context.performAndWait {
-            let coreDataPokemonEvolutionChain = CoreDataPokemonEvolutionChain(context: context)
-            
+            guard let coreDataPokemonEvolutionChain = NSEntityDescription.insertNewObject(forEntityName: "CoreDataPokemonEvolutionChain", into: context) as? CoreDataPokemonEvolutionChain else {
+                fatalError("Unable to create CoreDataPokemonEvolutionChain instance")
+            }
             coreDataPokemonEvolutionChain.id = Int32(pokemonEvolutionChain.id)
             coreDataPokemonEvolutionChain.evolvesTo = CoreDataPokemonEvolution.instance(pokemonEvolution: pokemonEvolutionChain.evolvesTo, context: context)
             return coreDataPokemonEvolutionChain

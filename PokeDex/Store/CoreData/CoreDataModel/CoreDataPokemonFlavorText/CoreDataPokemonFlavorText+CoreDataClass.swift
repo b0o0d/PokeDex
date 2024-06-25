@@ -13,7 +13,9 @@ import CoreData
 public class CoreDataPokemonFlavorText: NSManagedObject {
     static func instance(speciesID: Int, pokemonFlavorText: PokemonFlavorText, context: NSManagedObjectContext) -> CoreDataPokemonFlavorText {
         context.performAndWait {
-            let coreDataPokemonFlavorText = CoreDataPokemonFlavorText(context: context)
+            guard let coreDataPokemonFlavorText = NSEntityDescription.insertNewObject(forEntityName: "CoreDataPokemonFlavorText", into: context) as? CoreDataPokemonFlavorText else {
+                fatalError("Unable to create CoreDataPokemonFlavorText instance")
+            }
             
             coreDataPokemonFlavorText.flavorText = pokemonFlavorText.flavorText.data(using: .utf8)
             coreDataPokemonFlavorText.language = pokemonFlavorText.language
