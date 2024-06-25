@@ -123,6 +123,13 @@ extension PokemonListViewController: UITableViewDelegate {
             }
         }
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let pokemonDisplay = presenter.displayables[indexPath.row] as? PokemonDisplay else {
+            return
+        }
+        presenter.presentDetail(pokemonDisplay)
+    }
 }
 
 extension PokemonListViewController: PokemonRepositoryDelegate {

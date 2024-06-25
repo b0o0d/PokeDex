@@ -17,9 +17,11 @@ protocol PokemonPresenterInput {
     func load() async throws
     func update(_ pokemonDisplay: PokemonDisplay) throws
     func filterFavorites()
+    func presentDetail(_ pokemonDisplay: PokemonDisplay)
 }
 
 class PokemonListPresenter: PokemonListProtocol, PokemonPresenterInput {
+    private let coordinator: any Pushable
     private let repository: PokemonRepositoryProtocol
 
     weak var output: PokemonRepositoryDelegate?
@@ -36,7 +38,8 @@ class PokemonListPresenter: PokemonListProtocol, PokemonPresenterInput {
         }
     }
     
-    init(coordinator: any Coordinator, repository: PokemonRepositoryProtocol) {
+    init(coordinator: any Pushable, repository: PokemonRepositoryProtocol) {
+        self.coordinator = coordinator
         self.repository = repository
         if displayables.isEmpty {
             Task {
@@ -61,5 +64,9 @@ extension PokemonListPresenter {
     
     func filterFavorites() {
         isFocusFavorites.toggle()
+    }
+    
+    func presentDetail(_ pokemonDisplay: PokemonDisplay) {
+        coordinator.push(model: pokemonDisplay, pokemonStore: repository.storeService)
     }
 }
