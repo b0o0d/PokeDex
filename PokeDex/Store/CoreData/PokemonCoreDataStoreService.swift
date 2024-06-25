@@ -21,9 +21,13 @@ class PokemonCoreDataStoreService {
     }
     
     private func fetchCoreDataPokemonDisplay(_ pokemonDisplay: PokemonDisplay, context: NSManagedObjectContext) throws -> CoreDataPokemonDisplay? {
+        return try fetchCoreDataPokemonDisplay(speciesID: pokemonDisplay.speciesID, context: context)
+    }
+    
+    private func fetchCoreDataPokemonDisplay(speciesID: Int, context: NSManagedObjectContext) throws -> CoreDataPokemonDisplay? {
         try context.performAndWait {
             let fetchRequest = CoreDataPokemonDisplay.fetchRequest()
-            fetchRequest.predicate = NSPredicate(format: "speciesID == %d", pokemonDisplay.speciesID)
+            fetchRequest.predicate = NSPredicate(format: "speciesID == %d", speciesID)
             fetchRequest.fetchLimit = 1
             return try context.fetch(fetchRequest).first
         }
@@ -69,6 +73,10 @@ extension PokemonCoreDataStoreService: PokemonStoreServiceProtocol {
     
     func fetchPokemonDisplayList() throws -> [PokemonDisplay] {
         return try fetchCoreDataPokemonDisplayList().compactMap { $0.toPokemonDisplay() }
+    }
+    
+    func fetchPokemonDisplay(speciesID: Int) throws -> PokemonDisplay? {
+        return try fetchCoreDataPokemonDisplay(speciesID: speciesID, context: coreDataStack.viewContext)?.toPokemonDisplay()
     }
     
     @discardableResult

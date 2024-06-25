@@ -30,6 +30,7 @@
 		9F34A6912C2AE37800BA9006 /* PokemonDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F34A6902C2AE37800BA9006 /* PokemonDetailViewController.swift */; };
 		9F34A6932C2AE50700BA9006 /* PokemonDetailFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F34A6922C2AE50700BA9006 /* PokemonDetailFactory.swift */; };
 		9F34A6952C2AE72E00BA9006 /* PokemonDetailCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F34A6942C2AE72E00BA9006 /* PokemonDetailCoordinator.swift */; };
+		9F34A6982C2AFF8900BA9006 /* DequeModule in Frameworks */ = {isa = PBXBuildFile; productRef = 9F34A6972C2AFF8900BA9006 /* DequeModule */; };
 		9FACA44C2C27356D004C8DE0 /* CoreDataPokemonEvolutionChain+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FACA4442C27356D004C8DE0 /* CoreDataPokemonEvolutionChain+CoreDataClass.swift */; };
 		9FACA44D2C27356D004C8DE0 /* CoreDataPokemonEvolutionChain+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FACA4452C27356D004C8DE0 /* CoreDataPokemonEvolutionChain+CoreDataProperties.swift */; };
 		9FACA44E2C27356D004C8DE0 /* CoreDataPokemonDisplay+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FACA4462C27356D004C8DE0 /* CoreDataPokemonDisplay+CoreDataClass.swift */; };
@@ -124,6 +125,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9F06B9A32C25C01900335721 /* Alamofire in Frameworks */,
+				9F34A6982C2AFF8900BA9006 /* DequeModule in Frameworks */,
 				9F06B9A02C25BFDE00335721 /* SDWebImage in Frameworks */,
 				9F06B99D2C25BF6600335721 /* SnapKit in Frameworks */,
 			);
@@ -313,6 +315,7 @@
 				9F06B99C2C25BF6600335721 /* SnapKit */,
 				9F06B99F2C25BFDE00335721 /* SDWebImage */,
 				9F06B9A22C25C01900335721 /* Alamofire */,
+				9F34A6972C2AFF8900BA9006 /* DequeModule */,
 			);
 			productName = PokeDex;
 			productReference = 9F06B9682C25BF2F00335721 /* PokeDex.app */;
@@ -390,6 +393,7 @@
 				9F06B99B2C25BF6600335721 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				9F06B99E2C25BFDE00335721 /* XCRemoteSwiftPackageReference "SDWebImage" */,
 				9F06B9A12C25C01900335721 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				9F34A6962C2AFF8900BA9006 /* XCRemoteSwiftPackageReference "swift-collections" */,
 			);
 			productRefGroup = 9F06B9692C25BF2F00335721 /* Products */;
 			projectDirPath = "";
@@ -833,6 +837,14 @@
 				minimumVersion = 5.9.1;
 			};
 		};
+		9F34A6962C2AFF8900BA9006 /* XCRemoteSwiftPackageReference "swift-collections" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-collections.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.1.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -850,6 +862,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 9F06B9A12C25C01900335721 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
+		};
+		9F34A6972C2AFF8900BA9006 /* DequeModule */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9F34A6962C2AFF8900BA9006 /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = DequeModule;
 		};
 /* End XCSwiftPackageProductDependency section */
 

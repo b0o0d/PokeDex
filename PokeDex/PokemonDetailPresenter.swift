@@ -9,7 +9,7 @@ import Foundation
 
 class PokemonDetailPresenter {
     private let coordinator: any Pushable & Finishable
-    private let pokemon: PokemonDisplay
+    let pokemon: PokemonDisplay
     private let pokemonStoreService: (any PokemonStoreServiceProtocol)?
     
     init(coordinatore: any Pushable & Finishable, pokemon: PokemonDisplay, pokemonStoreService: (any PokemonStoreServiceProtocol)?) {
@@ -25,5 +25,9 @@ class PokemonDetailPresenter {
         Task {
             try pokemonStoreService?.updatePokemonDisplay(pokemon)
         }
+    }
+    
+    func evolutionPokemonDisplay(for speciesID: Int) throws -> PokemonDisplay? {
+        return try pokemonStoreService?.fetchPokemonDisplay(speciesID: speciesID)
     }
 }

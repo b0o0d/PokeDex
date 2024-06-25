@@ -18,6 +18,7 @@ protocol PokemonPresenterInput {
     func update(_ pokemonDisplay: PokemonDisplay) throws
     func filterFavorites()
     func presentDetail(_ pokemonDisplay: PokemonDisplay)
+    func sync() throws
 }
 
 class PokemonListPresenter: PokemonListProtocol, PokemonPresenterInput {
@@ -68,5 +69,9 @@ extension PokemonListPresenter {
     
     func presentDetail(_ pokemonDisplay: PokemonDisplay) {
         coordinator.push(model: pokemonDisplay, pokemonStore: repository.storeService)
+    }
+    
+    func sync() throws {
+        try repository.sync()
     }
 }

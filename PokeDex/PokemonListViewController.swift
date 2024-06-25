@@ -81,6 +81,17 @@ class PokemonListViewController: UIViewController {
         updateSnapshot()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        try? presenter.sync()
+        for indexPath in tableView.indexPathsForVisibleRows ?? [] {
+            guard let cell = tableView.cellForRow(at: indexPath) as? PokemonListCell else {
+                continue
+            }
+            cell.favoriteButton.isSelected = (presenter.displayables[indexPath.row] as? PokemonDisplay)?.isFavorite ?? false
+        }
+    }
+    
     func setupLayout() {
         view.addSubview(tableView)
         view.addSubview(favoriteButton)

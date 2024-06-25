@@ -16,6 +16,7 @@ protocol PokemonRepositoryProtocol {
     
     func loadPokemonDisplayList() async throws
     func updatePokemonDisplay(_ pokemonDisplay: PokemonDisplay) throws
+    func sync() throws
 }
 
 protocol PokemonRepositoryDelegate: AnyObject {
@@ -136,6 +137,31 @@ class PokemonRepository: PokemonRepositoryProtocol {
     
     func updatePokemonDisplay(_ pokemonDisplay: PokemonDisplay) throws {
         try storeService.updatePokemonDisplay(pokemonDisplay)
+    }
+    
+    func sync() throws {
+        let localDisplays = try storeService.fetchPokemonDisplayList()
+        var i = 0
+        var j = 0
+        while i < displayables.count && j < localDisplays.count {
+            guard let display = displayables[i] as? PokemonDisplay else {
+                i += 1
+                continue
+            }
+            let localDisplay = localDisplays[j]
+            if display.speciesID == localDisplay.speciesID {
+                if display.isFavorite != localDisplay.isFavorite {
+                    display.isFavorite = localDisplay.isFavorite
+                }
+                i += 1
+                j += 1
+            } else if display.speciesID < localDisplay.speciesID {
+                i += 1
+            } else {
+                j += 1
+            }
+            
+        }
     }
 }
 
