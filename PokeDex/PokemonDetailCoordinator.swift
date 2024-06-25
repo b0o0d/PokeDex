@@ -33,6 +33,7 @@ class PokemonDetailCoordinator: Pushable, Finishable {
     }
     
     func start() {
-        
+        let viewController = PokemonDetailFactory.create(coordinator: self, model: pokemonDisplay, pokemonStore: pokemonStore)
+        navigationController?.pushViewController(viewController, animated: true)
     }
 }

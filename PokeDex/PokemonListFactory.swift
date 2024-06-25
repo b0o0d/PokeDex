@@ -8,7 +8,7 @@
 import Foundation
 
 class PokemonListFactory {
-    static func create(coordinator: Coordinator) -> PokemonListViewController {
+    static func create(coordinator: Pushable) -> PokemonListViewController {
         let apiClient = PokemonAPIClient()
         let storeService = PokemonCoreDataStoreService()
         let repository = PokemonRepository(storeService: storeService, apiClient: apiClient)
