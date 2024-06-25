@@ -13,7 +13,9 @@ import CoreData
 extension CoreDataPokemonDisplay {
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<CoreDataPokemonDisplay> {
-        return NSFetchRequest<CoreDataPokemonDisplay>(entityName: "CoreDataPokemonDisplay")
+        let request = NSFetchRequest<CoreDataPokemonDisplay>(entityName: "CoreDataPokemonDisplay")
+        request.sortDescriptors = [NSSortDescriptor(key: "speciesID", ascending: true)]
+        return request
     }
 
     @NSManaged public var image: Data?
@@ -30,15 +32,3 @@ extension CoreDataPokemonDisplay {
 extension CoreDataPokemonDisplay : Identifiable {
 
 }
-
-extension CoreDataPokemonDisplay {
-    @nonobjc public class func fetchRequest(offset: Int, limit: Int) -> NSFetchRequest<CoreDataPokemonDisplay> {
-        let request = NSFetchRequest<CoreDataPokemonDisplay>(entityName: "CoreDataPokemonDisplay")
-        request.sortDescriptors = [NSSortDescriptor(key: "speciesID", ascending: true)]
-        request.fetchOffset = offset
-        request.fetchLimit = limit
-        
-        return request
-    }
-}
-

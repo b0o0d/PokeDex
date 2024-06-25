@@ -12,7 +12,7 @@ protocol PokemonStoreServiceProtocol {
     associatedtype U
     associatedtype V
     
-    func fetchPokemonDisplayList(offset: Int, limit: Int) throws -> [PokemonDisplay]
+    func fetchPokemonDisplayList() throws -> [PokemonDisplay]
     @discardableResult
     func addPokemonDisplay(_ pokemonDisplay: PokemonDisplay) throws -> T
     @discardableResult

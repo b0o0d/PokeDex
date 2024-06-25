@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreData
 
 class PokemonCoreDataStoreService {
     private let coreDataStack: CoreDataStack
@@ -14,9 +15,9 @@ class PokemonCoreDataStoreService {
         self.coreDataStack = coreDataStack
     }
     
-    private func fetchCoreDataPokemonDisplayList(offset: Int, limit: Int) throws -> [CoreDataPokemonDisplay] {
-        let fetchRequest = CoreDataPokemonDisplay.fetchRequest(offset: offset, limit: limit)
-        return try coreDataStack.viewContext.fetch(fetchRequest)
+    private func fetchCoreDataPokemonDisplayList(context: NSManagedObjectContext = CoreDataStack.shared.viewContext) throws -> [CoreDataPokemonDisplay] {
+        let fetchRequest = CoreDataPokemonDisplay.fetchRequest()
+        return try context.fetch(fetchRequest)
     }
     
     private func fetchCoreDataPokemonDisplay(_ pokemonDisplay: PokemonDisplay, context: NSManagedObjectContext) throws -> CoreDataPokemonDisplay? {
