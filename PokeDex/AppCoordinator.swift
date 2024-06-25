@@ -8,6 +8,10 @@
 import Foundation
 import UIKit
 
+protocol Pushable: Coordinator {
+    func push(model: PokemonDisplay, pokemonStore: (any PokemonStoreServiceProtocol)?)
+}
+
 class AppCoordinator: Coordinator {
     var navigationController: UINavigationController?
     var childCoordinators: [Coordinator] = []
