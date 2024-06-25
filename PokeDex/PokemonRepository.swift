@@ -12,7 +12,7 @@ protocol PokemonRepositoryProtocol {
     var limit: Int { get }
     var storeService: any PokemonStoreServiceProtocol { get }
     var apiClient: PokemonAPIClient { get }
-    var displayables: [PokemonDisplayable] { get set }
+    var displayables: [any PokemonDisplayable] { get set }
     
     func loadPokemonDisplayList() async throws
     func updatePokemonDisplay(_ pokemonDisplay: PokemonDisplay) throws
@@ -27,7 +27,7 @@ class PokemonRepository: PokemonRepositoryProtocol {
     let limit: Int = 20
     var storeService: any PokemonStoreServiceProtocol
     var apiClient: PokemonAPIClient
-    var displayables: [PokemonDisplayable] {
+    var displayables: [any PokemonDisplayable] {
         get {
             rwQueue.sync { [weak self] in
                 return self?._displayables ?? []
@@ -51,7 +51,7 @@ class PokemonRepository: PokemonRepositoryProtocol {
         }
     }
     
-    private var _displayables: [PokemonDisplayable] = []
+    private var _displayables: [any PokemonDisplayable] = []
     private var rwQueue = DispatchQueue(label: "PokemonRepository")
     
     weak var delegate: PokemonRepositoryDelegate?
@@ -69,7 +69,7 @@ class PokemonRepository: PokemonRepositoryProtocol {
         offset = pokemonDisplays.count
     }
     
-    private func checkAppendable(pokemonDisplay: PokemonDisplayable) -> Bool {
+    private func checkAppendable(pokemonDisplay: any PokemonDisplayable) -> Bool {
         guard let lastPokemonDisplay = displayables.last else {
             return true
         }

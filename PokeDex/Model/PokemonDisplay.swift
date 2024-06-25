@@ -8,7 +8,7 @@
 import Foundation
 import CoreData
 
-protocol PokemonDisplayable {
+protocol PokemonDisplayable: Hashable {
     var speciesID: Int { get }
     var name: String { get }
     var types: [String] { get }
@@ -36,7 +36,7 @@ class PokemonDisplay: PokemonDisplayable {
          types: [String],
          imageURL: String?,
          image: Data? = nil,
-         evolutionChain: PokemonEvolutionChain, 
+         evolutionChain: PokemonEvolutionChain,
          flavorText: PokemonFlavorText,
          isFavorite: Bool = false,
          coreDataObjectID: NSManagedObjectID? = nil
@@ -50,5 +50,25 @@ class PokemonDisplay: PokemonDisplayable {
         self.flavorText = flavorText
         self.isFavorite = isFavorite
         self.coreDataObjectID = coreDataObjectID
+    }
+    
+    // MARK: - Hashable
+    static func == (lhs: PokemonDisplay, rhs: PokemonDisplay) -> Bool {
+        return
+            lhs.speciesID == rhs.speciesID &&
+            lhs.name == rhs.name &&
+            lhs.types == rhs.types &&
+            lhs.imageURL == rhs.imageURL &&
+            lhs.evolutionChain.id == rhs.evolutionChain.id &&
+            lhs.flavorText.flavorText == rhs.flavorText.flavorText
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(speciesID)
+        hasher.combine(name)
+        hasher.combine(types)
+        hasher.combine(imageURL)
+        hasher.combine(evolutionChain.id)
+        hasher.combine(flavorText.flavorText)
     }
 }
