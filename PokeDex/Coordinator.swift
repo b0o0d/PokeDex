@@ -14,11 +14,11 @@ protocol Coordinator: AnyObject {
     var parentCoordinator: Coordinator? { get set }
     
     func start()
-    func finish(_ coordinator: Coordinator)
+    func childDidfinish(_ coordinator: Coordinator)
 }
 
 extension Coordinator {
-    func finish(_ coordinator: Coordinator) {
+    func childDidfinish(_ coordinator: Coordinator) {
         childCoordinators.removeAll { $0 === coordinator }
     }
 }
