@@ -22,8 +22,8 @@ class PokemonBasicCell: UITableViewCell, BasicCellProtocol {
     typealias Model = PokemonDisplayable
     static let reuseIdentifier = "PokemonBasicCell"
     
-    init() {
-        super.init(style: .default, reuseIdentifier: Self.reuseIdentifier)
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupLayout()
     }
     
@@ -35,7 +35,7 @@ class PokemonBasicCell: UITableViewCell, BasicCellProtocol {
         // Override this method in subclass
     }
     
-    func configure(with model: PokemonDisplayable) {
+    func configure(with model: any PokemonDisplayable) {
         // Override this method in subclass
     }
 }
@@ -131,7 +131,7 @@ class PokemonListCell: PokemonBasicCell {
         }
     }
     
-    override func configure(with model: PokemonDisplayable) {
+    override func configure(with model: any PokemonDisplayable) {
         pokemonNameLabel.text = model.name
         pokemonIDLabel.text = String(model.speciesID)
         for type in model.types {
