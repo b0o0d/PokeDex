@@ -23,9 +23,13 @@ protocol PokemonPresenterInput {
 
 class PokemonListPresenter: PokemonListProtocol, PokemonPresenterInput {
     private let coordinator: any Pushable
-    private let repository: PokemonRepositoryProtocol
+    private var repository: PokemonRepositoryProtocol
 
-    weak var output: PokemonRepositoryDelegate?
+    weak var output: PokemonRepositoryDelegate? {
+        didSet {
+            repository.delegate = output
+        }
+    }
     var displayables: [any PokemonDisplayable] {
         if isFocusFavorites {
             return repository.displayables.filter { ($0 as? PokemonDisplay)?.isFavorite == true }

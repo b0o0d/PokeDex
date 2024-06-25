@@ -106,7 +106,6 @@ class PokemonListViewController: UIViewController {
         }
     }
     
-    @MainActor
     func updateSnapshot() {
         guard let displayables = presenter.displayables as? [PokemonDisplay] else {
             return
@@ -145,6 +144,8 @@ extension PokemonListViewController: UITableViewDelegate {
 
 extension PokemonListViewController: PokemonRepositoryDelegate {
     func didUpdateList() {
-        updateSnapshot()
+        DispatchQueue.main.async {
+            self.updateSnapshot()
+        }
     }
 }

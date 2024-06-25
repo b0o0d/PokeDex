@@ -13,6 +13,7 @@ protocol PokemonRepositoryProtocol {
     var storeService: any PokemonStoreServiceProtocol { get }
     var apiClient: PokemonAPIClient { get }
     var displayables: [any PokemonDisplayable] { get set }
+    var delegate: PokemonRepositoryDelegate? { get set }
     
     func loadPokemonDisplayList() async throws
     func updatePokemonDisplay(_ pokemonDisplay: PokemonDisplay) throws
@@ -47,7 +48,6 @@ class PokemonRepository: PokemonRepositoryProtocol {
                     try? self.storeService.addPokemonDisplay(display)
                 }
                 self._displayables = newValue
-                self.delegate?.didUpdateList()
             }
         }
     }
@@ -133,6 +133,7 @@ class PokemonRepository: PokemonRepositoryProtocol {
             self.displayables.append(contentsOf: appendables)
             self.offset += self.limit
         }
+        self.delegate?.didUpdateList()
     }
     
     func updatePokemonDisplay(_ pokemonDisplay: PokemonDisplay) throws {
