@@ -23,8 +23,6 @@ protocol PokemonStoreServiceProtocol {
     
     @discardableResult
     func addPokemonFlavorText(_ flavorText: PokemonFlavorText, speciesID: Int) throws -> V
-    
-    func saveContext()
 }
 
 enum PokemonStoreError: Error {

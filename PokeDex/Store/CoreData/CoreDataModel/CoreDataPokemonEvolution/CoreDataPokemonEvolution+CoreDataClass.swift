@@ -12,9 +12,7 @@ import CoreData
 @objc(CoreDataPokemonEvolution)
 public class CoreDataPokemonEvolution: NSManagedObject {
     static func instance(pokemonEvolution: PokemonEvolution, context: NSManagedObjectContext) -> CoreDataPokemonEvolution {
-        guard let coreDataPokemonEvolution = NSEntityDescription.insertNewObject(forEntityName: "CoreDataPokemonEvolution", into: context) as? CoreDataPokemonEvolution else {
-            fatalError("Unable to create CoreDataPokemonEvolution instance")
-        }
+        let coreDataPokemonEvolution = CoreDataPokemonEvolution(context: context)
         coreDataPokemonEvolution.speciesName = pokemonEvolution.speciesName
         coreDataPokemonEvolution.evolvesTo = NSSet(array: pokemonEvolution.evolvesTo.compactMap { CoreDataPokemonEvolution.instance(pokemonEvolution: $0, context: context)
         })

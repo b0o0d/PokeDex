@@ -19,24 +19,30 @@ class PokemonCoreDataStoreService {
         return try coreDataStack.viewContext.fetch(fetchRequest)
     }
     
-    private func fetchCoreDataPokemonDisplay(_ pokemonDisplay: PokemonDisplay) throws -> CoreDataPokemonDisplay? {
-        let fetchRequest = CoreDataPokemonDisplay.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "speciesID == %d", pokemonDisplay.speciesID)
-        fetchRequest.fetchLimit = 1
-        return try coreDataStack.viewContext.fetch(fetchRequest).first
+    private func fetchCoreDataPokemonDisplay(_ pokemonDisplay: PokemonDisplay, context: NSManagedObjectContext) throws -> CoreDataPokemonDisplay? {
+        try context.performAndWait {
+            let fetchRequest = CoreDataPokemonDisplay.fetchRequest()
+            fetchRequest.predicate = NSPredicate(format: "speciesID == %d", pokemonDisplay.speciesID)
+            fetchRequest.fetchLimit = 1
+            return try context.fetch(fetchRequest).first
+        }
     }
     
-    private func fetchCoreDataPokemonEvolutionChain(_ evolutionChain: PokemonEvolutionChain) throws -> CoreDataPokemonEvolutionChain? {
-        let fetchRequest = CoreDataPokemonEvolutionChain.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "id == %d", evolutionChain.id)
-        fetchRequest.fetchLimit = 1
-        return try coreDataStack.viewContext.fetch(fetchRequest).first
+    private func fetchCoreDataPokemonEvolutionChain(_ evolutionChain: PokemonEvolutionChain, context: NSManagedObjectContext) throws -> CoreDataPokemonEvolutionChain? {
+        try context.performAndWait {
+            let fetchRequest = CoreDataPokemonEvolutionChain.fetchRequest()
+            fetchRequest.predicate = NSPredicate(format: "id == %d", evolutionChain.id)
+            fetchRequest.fetchLimit = 1
+            return try context.fetch(fetchRequest).first
+        }
     }
     
-    private func fetchCoreDataPokemonFlavorText(_ flavorText: PokemonFlavorText, speciesID: Int) throws -> CoreDataPokemonFlavorText? {
-        let fetchRequest = CoreDataPokemonFlavorText.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "speciesID == %d && language == %@ AND version == %@", speciesID, flavorText.language, flavorText.version)
-        return try coreDataStack.viewContext.fetch(fetchRequest).first
+    private func fetchCoreDataPokemonFlavorText(_ flavorText: PokemonFlavorText, speciesID: Int, context: NSManagedObjectContext) throws -> CoreDataPokemonFlavorText? {
+        try context.performAndWait {
+            let fetchRequest = CoreDataPokemonFlavorText.fetchRequest()
+            fetchRequest.predicate = NSPredicate(format: "speciesID == %d && language == %@ AND version == %@", speciesID, flavorText.language, flavorText.version)
+            return try context.fetch(fetchRequest).first
+        }
     }
     
     func deleteAll() throws {
@@ -51,6 +57,7 @@ class PokemonCoreDataStoreService {
         let fetchRequestFlavorText = CoreDataPokemonFlavorText.fetchRequest()
         let allPokemonFlavorText = try coreDataStack.viewContext.fetch(fetchRequestFlavorText)
         allPokemonFlavorText.forEach { coreDataStack.viewContext.delete($0) }
+        try coreDataStack.viewContext.save()
     }
 }
 
@@ -59,32 +66,36 @@ extension PokemonCoreDataStoreService: PokemonStoreServiceProtocol {
     typealias U = CoreDataPokemonEvolutionChain
     typealias V = CoreDataPokemonFlavorText
     
-    func fetchPokemonDisplayList(offset: Int, limit: Int) throws -> [PokemonDisplay] {
-        return try fetchCoreDataPokemonDisplayList(offset: offset, limit: limit).compactMap { $0.toPokemonDisplay() }
+    func fetchPokemonDisplayList() throws -> [PokemonDisplay] {
+        return try fetchCoreDataPokemonDisplayList().compactMap { $0.toPokemonDisplay() }
     }
     
+    @discardableResult
     func addPokemonDisplay(_ pokemonDisplay: PokemonDisplay) throws -> CoreDataPokemonDisplay {
+        let backgroundContext = coreDataStack.backgroundContext
         do {
-            let expectNil = try fetchCoreDataPokemonDisplay(pokemonDisplay)
+            let expectNil = try fetchCoreDataPokemonDisplay(pokemonDisplay, context: backgroundContext)
             guard expectNil == nil else {
                 throw PokemonStoreError.alreadyExists
             }
+            let ret = CoreDataPokemonDisplay.instance(pokemonDisplay: pokemonDisplay, context: backgroundContext)
+            try backgroundContext.save()
+            return ret
         } catch {
             throw error
         }
-        
-        return CoreDataPokemonDisplay.instance(pokemonDisplay: pokemonDisplay, context: coreDataStack.viewContext)
     }
     
     func updatePokemonDisplay(_ pokemonDisplay: PokemonDisplay) throws -> CoreDataPokemonDisplay {
+        let backgroundContext = coreDataStack.backgroundContext
         do {
-            let expectNotNil = try fetchCoreDataPokemonDisplay(pokemonDisplay)
+            let expectNotNil = try fetchCoreDataPokemonDisplay(pokemonDisplay, context: backgroundContext)
             guard let expectNotNil = expectNotNil else {
                 throw PokemonStoreError.pokemonDisplayNotFound
             }
             expectNotNil.image = pokemonDisplay.image
             expectNotNil.isFavorite = pokemonDisplay.isFavorite
-            
+            try backgroundContext.save()
             return expectNotNil
         } catch {
             throw error
@@ -92,32 +103,32 @@ extension PokemonCoreDataStoreService: PokemonStoreServiceProtocol {
     }
     
     func addPokemonEvolutionChain(_ evolutionChain: PokemonEvolutionChain) throws -> CoreDataPokemonEvolutionChain {
+        let backgroundContext = coreDataStack.backgroundContext
         do {
-            let expectNil = try fetchCoreDataPokemonEvolutionChain(evolutionChain)
+            let expectNil = try fetchCoreDataPokemonEvolutionChain(evolutionChain, context: backgroundContext)
             guard expectNil == nil else {
                 throw PokemonStoreError.alreadyExists
             }
+            let ret = CoreDataPokemonEvolutionChain.instance(pokemonEvolutionChain: evolutionChain, context: backgroundContext)
+            try backgroundContext.save()
+            return ret
         } catch {
             throw error
         }
-        
-        return CoreDataPokemonEvolutionChain.instance(pokemonEvolutionChain: evolutionChain, context: coreDataStack.viewContext)
     }
     
     func addPokemonFlavorText(_ flavorText: PokemonFlavorText, speciesID: Int) throws -> CoreDataPokemonFlavorText {
+        let backgroundContext = coreDataStack.backgroundContext
         do {
-            let expectNil = try fetchCoreDataPokemonFlavorText(flavorText, speciesID: speciesID)
+            let expectNil = try fetchCoreDataPokemonFlavorText(flavorText, speciesID: speciesID, context: backgroundContext)
             guard expectNil == nil else {
                 throw PokemonStoreError.alreadyExists
             }
+            let ret = CoreDataPokemonFlavorText.instance(speciesID: speciesID, pokemonFlavorText: flavorText, context: backgroundContext)
+            try backgroundContext.save()
+            return ret
         } catch {
             throw error
         }
-        
-        return CoreDataPokemonFlavorText.instance(speciesID: speciesID, pokemonFlavorText: flavorText, context: coreDataStack.viewContext)
-    }
-    
-    func saveContext() {
-        coreDataStack.saveContext()
     }
 }

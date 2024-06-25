@@ -16,6 +16,10 @@ class CoreDataStack {
     var viewContext: NSManagedObjectContext {
         return persistentContainer.viewContext
     }
+    
+    var backgroundContext: NSManagedObjectContext {
+        return persistentContainer.newBackgroundContext()
+    }
 
     init(inMemory: Bool = false) {
         persistentContainer = NSPersistentContainer(name: "PokeDex")
@@ -27,16 +31,7 @@ class CoreDataStack {
                 fatalError("CoreDataStack: Unable to load persistent stores: \(error), \(error.userInfo)")
             }
         })
-    }
-    
-    func saveContext() {
-        let context = viewContext
-        if context.hasChanges {
-            do {
-                try context.save()
-            } catch {
-                fatalError("CoreDataStack: Unable to save context: \(error)")
-            }
-        }
+        
+        persistentContainer.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
     }
 }

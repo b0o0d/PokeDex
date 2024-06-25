@@ -12,19 +12,19 @@ import CoreData
 @objc(CoreDataPokemonDisplay)
 public class CoreDataPokemonDisplay: NSManagedObject {
     static func instance(pokemonDisplay: PokemonDisplay, context: NSManagedObjectContext) -> CoreDataPokemonDisplay {
-        guard let coreDataPokemonDisplay = NSEntityDescription.insertNewObject(forEntityName: "CoreDataPokemonDisplay", into: context) as? CoreDataPokemonDisplay else {
-            fatalError("Unable to create CoreDataPokemonDisplay instance")
+        context.performAndWait {
+            let coreDataPokemonDisplay = CoreDataPokemonDisplay(context: context)
+            
+            coreDataPokemonDisplay.speciesID = Int32(pokemonDisplay.speciesID)
+            coreDataPokemonDisplay.name = pokemonDisplay.name
+            coreDataPokemonDisplay.types = pokemonDisplay.types
+            coreDataPokemonDisplay.imageURL = pokemonDisplay.imageURL
+            coreDataPokemonDisplay.image = pokemonDisplay.image
+            coreDataPokemonDisplay.evolutionChain = CoreDataPokemonEvolutionChain.existingInstance(pokemonEvolutionChain: pokemonDisplay.evolutionChain, context: context)
+            coreDataPokemonDisplay.flavorText = CoreDataPokemonFlavorText.existingInstance(speciesID: pokemonDisplay.speciesID, pokemonFlavorText: pokemonDisplay.flavorText, context: context)
+            coreDataPokemonDisplay.isFavorite = pokemonDisplay.isFavorite
+            
+            return coreDataPokemonDisplay
         }
-        
-        coreDataPokemonDisplay.speciesID = Int32(pokemonDisplay.speciesID)
-        coreDataPokemonDisplay.name = pokemonDisplay.name
-        coreDataPokemonDisplay.types = pokemonDisplay.types
-        coreDataPokemonDisplay.imageURL = pokemonDisplay.imageURL
-        coreDataPokemonDisplay.image = pokemonDisplay.image
-        coreDataPokemonDisplay.evolutionChain = CoreDataPokemonEvolutionChain.existingInstance(pokemonEvolutionChain: pokemonDisplay.evolutionChain, context: context)
-        coreDataPokemonDisplay.flavorText = CoreDataPokemonFlavorText.existingInstance(speciesID: pokemonDisplay.speciesID, pokemonFlavorText: pokemonDisplay.flavorText, context: context)
-        coreDataPokemonDisplay.isFavorite = pokemonDisplay.isFavorite
-        
-        return coreDataPokemonDisplay
     }
 }
