@@ -16,7 +16,7 @@ extension CoreDataPokemonEvolution {
         return NSFetchRequest<CoreDataPokemonEvolution>(entityName: "CoreDataPokemonEvolution")
     }
 
-    @NSManaged public var speciesName: String?
+    @NSManaged public var speciesID: Int32
     @NSManaged public var evolvesTo: NSSet?
     @NSManaged public var evolvesFrom: NSSet?
 

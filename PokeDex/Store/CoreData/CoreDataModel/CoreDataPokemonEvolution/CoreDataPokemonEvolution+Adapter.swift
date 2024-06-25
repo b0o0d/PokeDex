@@ -10,10 +10,10 @@ import Foundation
 extension CoreDataPokemonEvolution {
     func toPokemonEvolution() -> PokemonEvolution {
         guard let coreDataEvolvesTo = evolvesTo as? Set<CoreDataPokemonEvolution>, coreDataEvolvesTo.count > 0 else {
-            return PokemonEvolution(speciesName: speciesName ?? "", evolvesTo: [])
+            return PokemonEvolution(speciesID: Int(speciesID), evolvesTo: [])
         }
         let evolvesToArray = coreDataEvolvesTo.compactMap { $0.toPokemonEvolution() }
         
-        return PokemonEvolution(speciesName: speciesName ?? "", evolvesTo: evolvesToArray)
+        return PokemonEvolution(speciesID: Int(speciesID), evolvesTo: evolvesToArray)
     }
 }

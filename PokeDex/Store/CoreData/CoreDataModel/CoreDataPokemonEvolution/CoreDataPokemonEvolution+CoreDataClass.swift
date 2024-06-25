@@ -15,7 +15,7 @@ public class CoreDataPokemonEvolution: NSManagedObject {
         guard let coreDataPokemonEvolution = NSEntityDescription.insertNewObject(forEntityName: "CoreDataPokemonEvolution", into: context) as? CoreDataPokemonEvolution else {
             fatalError("Unable to create CoreDataPokemonEvolution instance")
         }
-        coreDataPokemonEvolution.speciesName = pokemonEvolution.speciesName
+        coreDataPokemonEvolution.speciesID = Int32(pokemonEvolution.speciesID)
         coreDataPokemonEvolution.evolvesTo = NSSet(array: pokemonEvolution.evolvesTo.compactMap { CoreDataPokemonEvolution.instance(pokemonEvolution: $0, context: context)
         })
         return coreDataPokemonEvolution

@@ -12,20 +12,27 @@ final class PokemonAPIClientTests: XCTestCase {
     func testAPIDTOMapping() async throws {
         let sut = PokemonAPIClient()
         
-        let response = await sut.fetchRoughPokemons(offset: 1025, limit: 277)
+        let response = await sut.fetchRoughPokemons(offset: 0, limit: 10000)
         XCTAssertNotNil(response)
-        XCTAssertTrue(response!.results.count == 277)
+        XCTAssertTrue(response!.results.count == 1302)
         
+        let exp = expectation(description: "fetchPokemonDetail")
         
         for result in response!.results {
-            XCTAssertTrue(result.id != 0)
-            let detail = await sut.fetchPokemonDetail(id: result.id)
-            XCTAssertNotNil(detail)
-            let species = await sut.fetchPokemonSpecies(url: detail!.species.url)
-            XCTAssertNotNil(species)
-            let evolutionChain = await sut.pokemonEvolutionChain(url: species!.evolutionChainURL)
-            XCTAssertNotNil(evolutionChain)
+            Task {
+                XCTAssertTrue(result.id != 0)
+                let detail = await sut.fetchPokemonDetail(id: result.id)
+                XCTAssertNotNil(detail)
+                let species = await sut.fetchPokemonSpecies(url: detail!.species.url)
+                XCTAssertNotNil(species)
+                let evolutionChain = await sut.pokemonEvolutionChain(url: species!.evolutionChainURL)
+                XCTAssertNotNil(evolutionChain)
+            }
         }
+        exp.fulfill()
+        
+        await fulfillment(of: [exp], timeout: 10)
+        
     }
     
     func testFetchNextRoughPokemons() async throws {
