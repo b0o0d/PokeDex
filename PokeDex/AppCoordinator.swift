@@ -12,7 +12,16 @@ protocol Pushable: Coordinator {
     func push(model: PokemonDisplay, pokemonStore: (any PokemonStoreServiceProtocol)?)
 }
 
-class AppCoordinator: Coordinator {
+extension Pushable {
+    func push(model: PokemonDisplay, pokemonStore: (any PokemonStoreServiceProtocol)?) {
+        let coordinator = PokemonDetailCoordinator(navigationController: navigationController, model: model, pokemonStore: pokemonStore)
+        coordinator.parentCoordinator = self
+        childCoordinators.append(coordinator)
+        coordinator.start()
+    }
+}
+
+class AppCoordinator: Pushable {
     var navigationController: UINavigationController?
     var childCoordinators: [Coordinator] = []
     weak var parentCoordinator: Coordinator?
