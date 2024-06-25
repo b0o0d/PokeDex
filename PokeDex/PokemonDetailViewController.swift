@@ -160,16 +160,22 @@ class PokemonDetailViewController: UIViewController {
                 for evo in evolution.evolvesTo {
                     queue.append(evo)
                 }
-                let imageView = UIImageView()
+                let button = UIButton()
+                button.tag = pokemon.speciesID
                 if let imageData = pokemon.image {
-                    imageView.image = UIImage(data: imageData)
+                    button.setImage(UIImage(data: imageData), for: .normal)
                 }
-                vStackView.addArrangedSubview(imageView)
+                button.addTarget(self, action: #selector(pushToPokemonDetail(_:)), for: .touchUpInside)
+                vStackView.addArrangedSubview(button)
             }
             if vStackView.arrangedSubviews.count > 0 {
                 evolutionsStackView.addArrangedSubview(vStackView)
             }
         }
+    }
+    
+    @objc func pushToPokemonDetail(_ sender: UIButton) {
+        try? presenter.pushToPokemonDetail(for: sender.tag)
     }
     
     @objc func favoriteButtonTapped() {

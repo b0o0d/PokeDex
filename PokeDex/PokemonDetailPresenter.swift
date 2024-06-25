@@ -30,4 +30,11 @@ class PokemonDetailPresenter {
     func evolutionPokemonDisplay(for speciesID: Int) throws -> PokemonDisplay? {
         return try pokemonStoreService?.fetchPokemonDisplay(speciesID: speciesID)
     }
+    
+    func pushToPokemonDetail(for speciesID: Int) throws {
+        guard let evolutionPokemonDisplay = try evolutionPokemonDisplay(for: speciesID) else {
+            return
+        }
+        coordinator.push(model: evolutionPokemonDisplay, pokemonStore: pokemonStoreService)
+    }
 }
