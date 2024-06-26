@@ -23,6 +23,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let navi = UINavigationController()
         appCoordinator = AppCoordinator(navigationController: navi)
         appCoordinator?.start()
+        window.backgroundColor = .white
         window.rootViewController = navi
         window.makeKeyAndVisible()
         self.window = window

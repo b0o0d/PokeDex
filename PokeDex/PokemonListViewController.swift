@@ -59,6 +59,10 @@ class PokemonListViewController: UIViewController {
         button.setImage(UIImage(systemName: "star"), for: .normal)
         button.setImage(UIImage(systemName: "star.fill"), for: .selected)
         button.tintColor = .systemYellow
+        button.layer.borderColor = UIColor.systemYellow.cgColor
+        button.layer.borderWidth = 2
+        button.layer.cornerRadius = 22
+        button.clipsToBounds = true
         button.addTarget(self, action: #selector(favoriteButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -103,6 +107,7 @@ class PokemonListViewController: UIViewController {
         favoriteButton.snp.makeConstraints { make in
             make.trailing.equalTo(view.snp.trailing).offset(-16)
             make.bottom.equalTo(view.snp.bottom).offset(-16)
+            make.width.height.equalTo(44)
         }
     }
     
@@ -117,6 +122,7 @@ class PokemonListViewController: UIViewController {
     }
     
     @objc func favoriteButtonTapped() {
+        favoriteButton.isSelected.toggle()
         presenter.filterFavorites()
     }
 }

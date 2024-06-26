@@ -26,6 +26,8 @@ class PokemonDetailViewController: UIViewController {
     lazy var typesStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        stackView.spacing = 8
         return stackView
     }()
     
@@ -39,6 +41,7 @@ class PokemonDetailViewController: UIViewController {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
+        stackView.distribution = .fillEqually
         return stackView
     }()
     
@@ -71,7 +74,6 @@ class PokemonDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
     }
     
     deinit {
@@ -79,8 +81,6 @@ class PokemonDetailViewController: UIViewController {
     }
     
     private func setupLayout() {
-        evolutionsStackView.backgroundColor = .red
-        descriptionTextView.backgroundColor = .blue
         view.addSubview(pokemonIDLabel)
         view.addSubview(pokemonNameLabel)
         view.addSubview(typesStackView)
@@ -168,6 +168,10 @@ class PokemonDetailViewController: UIViewController {
                 let button = UIButton()
                 button.tag = evolution.speciesID
                 button.addTarget(self, action: #selector(pushToPokemonDetail(_:)), for: .touchUpInside)
+                button.layer.borderColor = UIColor.gray.cgColor
+                button.layer.borderWidth = 1
+                button.layer.cornerRadius = 8
+                button.clipsToBounds = true
                 
                 if let pokemon = try? presenter.evolutionPokemonDisplay(for: evolution.speciesID), let imageData = pokemon.image {
                     button.setImage(UIImage(data: imageData), for: .normal)
@@ -182,6 +186,9 @@ class PokemonDetailViewController: UIViewController {
     }
     
     @objc func pushToPokemonDetail(_ sender: UIButton) {
+        guard sender.tag != presenter.pokemon.speciesID else {
+            return
+        }
         try? presenter.pushToPokemonDetail(for: sender.tag)
     }
     

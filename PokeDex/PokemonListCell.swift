@@ -120,13 +120,13 @@ class PokemonListCell: PokemonBasicCell {
             make.bottom.equalTo(contentView.snp.bottom).offset(-8)
         }
         
-        pokemonIDLabel.snp.makeConstraints { make in
+        favoriteButton.snp.makeConstraints { make in
             make.trailing.equalTo(contentView.snp.trailing).offset(-16)
             make.centerY.equalTo(contentView.snp.centerY)
         }
-        
-        favoriteButton.snp.makeConstraints { make in
-            make.trailing.equalTo(pokemonIDLabel.snp.leading).offset(-8)
+
+        pokemonIDLabel.snp.makeConstraints { make in
+            make.trailing.equalTo(favoriteButton.snp.leading).offset(-16)
             make.centerY.equalTo(contentView.snp.centerY)
         }
     }
