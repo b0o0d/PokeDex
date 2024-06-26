@@ -155,21 +155,24 @@ class PokemonDetailViewController: UIViewController {
             var count = queue.count
             let vStackView = UIStackView()
             vStackView.axis = .vertical
+            vStackView.distribution = .fillEqually
             while count > 0 {
                 count -= 1
                 // FIXME: Currently, it's only draw the evolutions in local
-                guard let evolution = queue.popFirst(), let pokemon = try? presenter.evolutionPokemonDisplay(for: evolution.speciesID) else {
+                guard let evolution = queue.popFirst() else {
                     continue
                 }
                 for evo in evolution.evolvesTo {
                     queue.append(evo)
                 }
                 let button = UIButton()
-                button.tag = pokemon.speciesID
-                if let imageData = pokemon.image {
+                button.tag = evolution.speciesID
+                button.addTarget(self, action: #selector(pushToPokemonDetail(_:)), for: .touchUpInside)
+                
+                if let pokemon = try? presenter.evolutionPokemonDisplay(for: evolution.speciesID), let imageData = pokemon.image {
                     button.setImage(UIImage(data: imageData), for: .normal)
                 }
-                button.addTarget(self, action: #selector(pushToPokemonDetail(_:)), for: .touchUpInside)
+                
                 vStackView.addArrangedSubview(button)
             }
             if vStackView.arrangedSubviews.count > 0 {
