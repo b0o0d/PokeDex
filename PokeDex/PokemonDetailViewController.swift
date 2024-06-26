@@ -47,7 +47,9 @@ class PokemonDetailViewController: UIViewController {
     
     lazy var descriptionTextView: UITextView = {
         let textView = UITextView()
-        textView.translatesAutoresizingMaskIntoConstraints = false
+        textView.translatesAutoresizingMaskIntoConstraints = true
+        textView.font = .systemFont(ofSize: 16)
+        textView.isScrollEnabled = false
         return textView
     }()
     
@@ -135,7 +137,7 @@ class PokemonDetailViewController: UIViewController {
         if let image = model.image {
             imageView.image = UIImage(data: image)
         }
-        descriptionTextView.text = model.flavorText.flavorText
+        updateDescriptionTextViewHeight(text: model.flavorText.flavorText)
         
         for type in model.types {
             let typeLabel = UILabel()
@@ -183,6 +185,12 @@ class PokemonDetailViewController: UIViewController {
                 evolutionsStackView.addArrangedSubview(vStackView)
             }
         }
+    }
+    
+    private func updateDescriptionTextViewHeight(text: String) {
+        var finalText = text.replacingOccurrences(of: "\n", with: " ").replacingOccurrences(of: "\r", with: " ")
+        descriptionTextView.text = finalText
+        descriptionTextView.sizeToFit()
     }
     
     @objc func pushToPokemonDetail(_ sender: UIButton) {
