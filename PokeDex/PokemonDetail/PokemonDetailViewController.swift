@@ -11,6 +11,18 @@ import SnapKit
 import DequeModule
 
 class PokemonDetailViewController: UIViewController {
+    lazy var scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        return scrollView
+    }()
+    
+    lazy var contentView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     lazy var pokemonIDLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -76,6 +88,7 @@ class PokemonDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .white
     }
     
     deinit {
@@ -83,51 +96,62 @@ class PokemonDetailViewController: UIViewController {
     }
     
     private func setupLayout() {
-        view.addSubview(pokemonIDLabel)
-        view.addSubview(pokemonNameLabel)
-        view.addSubview(typesStackView)
-        view.addSubview(imageView)
-        view.addSubview(evolutionsStackView)
-        view.addSubview(descriptionTextView)
-        view.addSubview(favoriteButton)
+        view.addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        contentView.addSubview(pokemonIDLabel)
+        contentView.addSubview(pokemonNameLabel)
+        contentView.addSubview(typesStackView)
+        contentView.addSubview(imageView)
+        contentView.addSubview(evolutionsStackView)
+        contentView.addSubview(descriptionTextView)
+        contentView.addSubview(favoriteButton)
+        
+        scrollView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
+        contentView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+            make.width.equalTo(view.snp.width)
+        }
         
         pokemonIDLabel.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(16)
-            make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(16)
+            make.leading.equalTo(contentView.snp.leading).offset(16)
+            make.top.equalTo(contentView.snp.top).offset(16)
         }
         
         pokemonNameLabel.snp.makeConstraints { make in
-            make.top.equalTo(pokemonIDLabel.snp.bottom).offset(8)
-            make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(16)
+            make.leading.equalTo(pokemonIDLabel.snp.trailing).offset(16)
+            make.top.equalTo(pokemonIDLabel)
         }
         
         typesStackView.snp.makeConstraints { make in
-            make.top.equalTo(pokemonNameLabel.snp.bottom).offset(8)
-            make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(16)
+            make.leading.equalTo(pokemonIDLabel)
+            make.top.equalTo(pokemonNameLabel.snp.bottom).offset(16)
         }
         
         imageView.snp.makeConstraints { make in
-            make.top.equalTo(typesStackView.snp.bottom).offset(8)
-            make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(16)
-            make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).offset(-16)
-            make.height.equalTo(200)
+            make.centerX.equalTo(contentView.snp.centerX)
+            make.top.equalTo(pokemonIDLabel.snp.bottom).offset(16)
+            make.width.equalTo(300)
+            make.height.equalTo(300)
         }
         
         evolutionsStackView.snp.makeConstraints { make in
-            make.top.equalTo(imageView.snp.bottom).offset(8)
-            make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(16)
-            make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).offset(-16)
+            make.centerX.equalTo(contentView.snp.centerX)
+            make.top.equalTo(descriptionTextView.snp.bottom).offset(16)
+            make.bottom.equalTo(contentView.snp.bottom).offset(-16)
         }
         
         descriptionTextView.snp.makeConstraints { make in
-            make.top.equalTo(evolutionsStackView.snp.bottom).offset(8)
-            make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(16)
-            make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).offset(-16)
+            make.leading.equalTo(contentView.snp.leading).offset(16)
+            make.top.equalTo(imageView.snp.bottom).offset(16)
+            make.trailing.equalTo(contentView.snp.trailing).offset(-16)
         }
         
         favoriteButton.snp.makeConstraints { make in
-            make.top.equalTo(descriptionTextView.snp.bottom).offset(8)
-            make.centerX.equalTo(view.safeAreaLayoutGuide.snp.centerX)
+            make.trailing.equalTo(contentView.snp.trailing).offset(-16)
+            make.top.equalTo(contentView.snp.top).offset(16)
         }
     }
     
