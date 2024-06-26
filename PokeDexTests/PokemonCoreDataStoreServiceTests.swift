@@ -16,7 +16,7 @@ final class PokemonCoreDataStoreServiceTests: XCTestCase {
         try sut.deleteAll()
         
         let offset = 0
-        let limit = 1302
+        let limit = 1025
         let response = await apiClient.fetchRoughPokemons(offset: offset, limit: limit)
         XCTAssertNotNil(response)
         XCTAssertTrue(response!.results.count == limit)

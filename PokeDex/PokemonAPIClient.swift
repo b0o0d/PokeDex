@@ -12,7 +12,7 @@ class PokemonAPIClient {
     private(set) var next: String?
     
     func fetchRoughPokemons(offset: Int, limit: Int = 20) async -> PokemonRoughResponse? {
-        let url = "https://pokeapi.co/api/v2/pokemon?offset=\(offset)&limit=\(limit)"
+        let url = "https://pokeapi.co/api/v2/pokemon-species?offset=\(offset)&limit=\(limit)"
         let value = try? await AF.request(url).serializingDecodable(PokemonRoughResponse.self).value
         if let value = value {
             next = value.next
@@ -40,6 +40,12 @@ class PokemonAPIClient {
     // 不能 by id, 因為有些 Pokemon 對 species 的請求和 PokemonGeneralResult.id 不同
     // 因此必須改為同步在 fetchPokemonDetail 後才能請求
     func fetchPokemonSpecies(url: String) async -> PokemonSpecies? {
+        let value = try? await AF.request(url).serializingDecodable(PokemonSpecies.self).value
+        return value
+    }
+    
+    func fetchPokemonSpecies(id: Int) async -> PokemonSpecies? {
+        let url = "https://pokeapi.co/api/v2/pokemon-species/\(id)"
         let value = try? await AF.request(url).serializingDecodable(PokemonSpecies.self).value
         return value
     }

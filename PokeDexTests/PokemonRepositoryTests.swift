@@ -26,10 +26,10 @@ final class PokemonRepositoryTests: XCTestCase {
         while times > 0 {
             try await sut.loadPokemonDisplayList()
             times -= 1
-            XCTAssert(sut.displayables.count == count + sut.limit)
+            XCTAssert(sut.displayables.count == count + sut.defaultLimit)
             count = sut.displayables.count
         }
-        XCTAssert(sut.displayables.count == oriCount + sut.limit * oriTimes)
+        XCTAssert(sut.displayables.count == oriCount + sut.defaultLimit * oriTimes)
         expectation.fulfill()
         
         await fulfillment(of: [expectation], timeout: 10)

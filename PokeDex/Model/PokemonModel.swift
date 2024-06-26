@@ -63,10 +63,12 @@ struct PokemonType: Decodable {
 struct PokemonSpecies: Decodable {
     let evolutionChainURL: String
     let flavorTextEntries: [PokemonFlavorText]
+    let pokemonRequestID: Int
     
     enum CodingKeys: String, CodingKey {
         case evolutionChainURL = "evolution_chain"
         case flavorTextEntries = "flavor_text_entries"
+        case varieties
     }
     
     enum EvolutionChainCodingKeys: String, CodingKey {
@@ -80,7 +82,14 @@ struct PokemonSpecies: Decodable {
         evolutionChainURL = try evolutionChain.decode(String.self, forKey: .url)
         
         flavorTextEntries = try container.decode([PokemonFlavorText].self, forKey: .flavorTextEntries)
+        
+        let varieties = try container.decode([PokemonVariety].self, forKey: .varieties)
+        pokemonRequestID = varieties.first?.pokemon.id ?? 0
     }
+}
+
+struct PokemonVariety: Decodable {
+    let pokemon: PokemonGeneralResult
 }
 
 struct PokemonFlavorText: Decodable {

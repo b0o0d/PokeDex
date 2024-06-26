@@ -87,13 +87,13 @@ class PokemonRepository: PokemonRepositoryProtocol {
         let pokemonDisplays = await withTaskGroup(of: PokemonDisplay?.self) { group in
             for pokemon in pokemons {
                 group.addTask {
-                    let pokemonDetail = await self.apiClient.fetchPokemonDetail(id: pokemon.id)
-                    guard let pokemonDetail = pokemonDetail else {
+                    let species = await self.apiClient.fetchPokemonSpecies(id: pokemon.id)
+                    guard let species = species else {
                         return nil
                     }
                     
-                    let species = await self.apiClient.fetchPokemonSpecies(url: pokemonDetail.species.url)
-                    guard let species = species else {
+                    let pokemonDetail = await self.apiClient.fetchPokemonDetail(id: species.pokemonRequestID)
+                    guard let pokemonDetail = pokemonDetail else {
                         return nil
                     }
                     

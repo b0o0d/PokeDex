@@ -14,7 +14,7 @@ final class PokemonAPIClientTests: XCTestCase {
         
         let response = await sut.fetchRoughPokemons(offset: 0, limit: 10000)
         XCTAssertNotNil(response)
-        XCTAssertTrue(response!.results.count == 1302)
+        XCTAssertTrue(response!.results.count == 1025)
         
         let exp = expectation(description: "fetchPokemonDetail")
         
