@@ -7,15 +7,17 @@
 
 import Foundation
 
-protocol PokemonRepositoryProtocol {
+protocol PokemonRepositoryProtocol: AnyObject {
     var offset: Int { get set }
-    var limit: Int { get }
+    var defaultLimit: Int { get }
     var storeService: any PokemonStoreServiceProtocol { get }
     var apiClient: PokemonAPIClient { get }
     var displayables: [any PokemonDisplayable] { get set }
     var delegate: PokemonRepositoryDelegate? { get set }
     
-    func loadPokemonDisplayList() async throws
+    func loadPokemonDisplayListUntil(speciesID: Int) async throws
+    func loadPokemonDisplayList(limit: Int) async throws
+    func loadPokemonDisplay(speciesID: Int) -> (any PokemonDisplayable)?
     func updatePokemonDisplay(_ pokemonDisplay: PokemonDisplay) throws
     func sync() throws
 }
@@ -26,9 +28,10 @@ protocol PokemonRepositoryDelegate: AnyObject {
 
 class PokemonRepository: PokemonRepositoryProtocol {
     var offset: Int = 0
-    let limit: Int = 20
+    var defaultLimit: Int = 20
     var storeService: any PokemonStoreServiceProtocol
     var apiClient: PokemonAPIClient
+    
     var displayables: [any PokemonDisplayable] {
         get {
             rwQueue.sync { [weak self] in
@@ -40,7 +43,8 @@ class PokemonRepository: PokemonRepositoryProtocol {
                 guard let self = self else {
                     return
                 }
-                let appendMax = newValue.suffix(self.limit)
+                let count = newValue.count - self._displayables.count
+                let appendMax = newValue.suffix(count)
                 for displayable in appendMax {
                     guard let display = displayable as? PokemonDisplay, (display.coreDataObjectID == nil || !display.coreDataObjectID!.isTemporaryID) else {
                         continue
@@ -53,7 +57,7 @@ class PokemonRepository: PokemonRepositoryProtocol {
     }
     
     private var _displayables: [any PokemonDisplayable] = []
-    private var rwQueue = DispatchQueue(label: "PokemonRepository")
+    private var rwQueue = DispatchQueue(label: "PokemonRepository", attributes: .concurrent)
     
     weak var delegate: PokemonRepositoryDelegate?
     
@@ -77,8 +81,21 @@ class PokemonRepository: PokemonRepositoryProtocol {
         return pokemonDisplay.speciesID > lastPokemonDisplay.speciesID
     }
     
-    func loadPokemonDisplayList() async throws {
-        let roughResponse = await self.apiClient.fetchRoughPokemons(offset: self.offset, limit: self.limit)
+    func loadPokemonDisplayListUntil(speciesID: Int) async throws {
+        guard offset == 0 else {
+            try await loadPokemonDisplayList(limit: speciesID)
+            return
+        }
+        let limit = speciesID - offset
+        if limit <= 0 {
+            return
+        }
+        try await loadPokemonDisplayList(limit: limit)
+    }
+    
+    func loadPokemonDisplayList(limit: Int = 0) async throws {
+        let finalLimit = limit <= 0 ? defaultLimit : limit
+        let roughResponse = await self.apiClient.fetchRoughPokemons(offset: self.offset, limit: finalLimit)
         guard let roughResponse = roughResponse else {
             return
         }
@@ -128,12 +145,16 @@ class PokemonRepository: PokemonRepositoryProtocol {
             return rets
         }
         
-        let appendables = pokemonDisplays.filter { self.checkAppendable(pokemonDisplay: $0) }
+        let appendables = pokemonDisplays.filter { checkAppendable(pokemonDisplay: $0) }
         if !appendables.isEmpty {
-            self.displayables.append(contentsOf: appendables)
-            self.offset += self.limit
+            displayables.append(contentsOf: appendables)
+            offset += defaultLimit
         }
-        self.delegate?.didUpdateList()
+        delegate?.didUpdateList()
+    }
+    
+    func loadPokemonDisplay(speciesID: Int) -> (any PokemonDisplayable)? {
+        return displayables.first { ($0 as? PokemonDisplay)?.speciesID == speciesID }
     }
     
     func updatePokemonDisplay(_ pokemonDisplay: PokemonDisplay) throws {
