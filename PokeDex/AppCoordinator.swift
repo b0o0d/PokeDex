@@ -9,12 +9,12 @@ import Foundation
 import UIKit
 
 protocol Pushable: Coordinator {
-    func push(model: PokemonDisplay, pokemonStore: (any PokemonStoreServiceProtocol)?)
+    func push(model: PokemonDisplay, pokemonRepository: (any PokemonRepositoryProtocol)?)
 }
 
 extension Pushable {
-    func push(model: PokemonDisplay, pokemonStore: (any PokemonStoreServiceProtocol)?) {
-        let coordinator = PokemonDetailCoordinator(navigationController: navigationController, model: model, pokemonStore: pokemonStore)
+    func push(model: PokemonDisplay, pokemonRepository: (any PokemonRepositoryProtocol)?) {
+        let coordinator = PokemonDetailCoordinator(navigationController: navigationController, model: model, pokemonRepository: pokemonRepository)
         coordinator.parentCoordinator = self
         childCoordinators.append(coordinator)
         coordinator.start()

@@ -24,16 +24,16 @@ class PokemonDetailCoordinator: Pushable, Finishable {
     var parentCoordinator: (Coordinator)?
     
     let pokemonDisplay: PokemonDisplay
-    let pokemonStore: (any PokemonStoreServiceProtocol)?
+    let pokemonRepository: (any PokemonRepositoryProtocol)?
     
-    init(navigationController: UINavigationController?, model: PokemonDisplay, pokemonStore: (any PokemonStoreServiceProtocol)?) {
+    init(navigationController: UINavigationController?, model: PokemonDisplay, pokemonRepository: (any PokemonRepositoryProtocol)?) {
         self.navigationController = navigationController
         self.pokemonDisplay = model
-        self.pokemonStore = pokemonStore
+        self.pokemonRepository = pokemonRepository
     }
     
     func start() {
-        let viewController = PokemonDetailFactory.create(coordinator: self, model: pokemonDisplay, pokemonStore: pokemonStore)
+        let viewController = PokemonDetailFactory.create(coordinator: self, model: pokemonDisplay, pokemonRepository: pokemonRepository)
         navigationController?.pushViewController(viewController, animated: true)
     }
 }

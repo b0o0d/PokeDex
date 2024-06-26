@@ -10,12 +10,13 @@ import Foundation
 class PokemonDetailPresenter {
     private let coordinator: any Pushable & Finishable
     let pokemon: PokemonDisplay
-    private let pokemonStoreService: (any PokemonStoreServiceProtocol)?
+    private let repository: (any PokemonRepositoryProtocol)?
     
-    init(coordinatore: any Pushable & Finishable, pokemon: PokemonDisplay, pokemonStoreService: (any PokemonStoreServiceProtocol)?) {
+    init(coordinatore: any Pushable & Finishable, pokemon: PokemonDisplay, pokemonRepository: (any PokemonRepositoryProtocol)?) {
         self.coordinator = coordinatore
         self.pokemon = pokemon
-        self.pokemonStoreService = pokemonStoreService
+        self.repository = pokemonRepository
+        self.maxSpeciesID = repository?.displayables.last?.speciesID ?? pokemon.speciesID
     }
     
     var didUpdateFavorite: ((Bool) -> Void)?
@@ -23,7 +24,7 @@ class PokemonDetailPresenter {
     func toggleFavorite() {
         pokemon.isFavorite.toggle()
         Task {
-            try pokemonStoreService?.updatePokemonDisplay(pokemon)
+            try repository?.updatePokemonDisplay(pokemon)
         }
     }
     
