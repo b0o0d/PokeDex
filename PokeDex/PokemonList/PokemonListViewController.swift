@@ -67,6 +67,21 @@ class PokemonListViewController: UIViewController {
         return button
     }()
     
+    lazy var deleteAllButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Delete All", for: .normal)
+        button.setTitleColor(.systemRed, for: .normal)
+        button.addTarget(self, action: #selector(deleteAllButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    @objc func deleteAllButtonTapped() {
+        Task {
+            try (presenter as? PokemonListPresenter)?.deleteAll()
+        }
+    }
+    
     var presenter: PokemonPresenterInput & PokemonListProtocol
     
     init(presenter: PokemonPresenterInput & PokemonListProtocol) {
@@ -108,6 +123,12 @@ class PokemonListViewController: UIViewController {
             make.trailing.equalTo(view.snp.trailing).offset(-16)
             make.bottom.equalTo(view.snp.bottom).offset(-16)
             make.width.height.equalTo(44)
+        }
+        
+        view.addSubview(deleteAllButton)
+        deleteAllButton.snp.makeConstraints { make in
+            make.trailing.equalTo(view.snp.trailing).offset(-16)
+            make.bottom.equalTo(favoriteButton.snp.top).offset(-16)
         }
     }
     

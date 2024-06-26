@@ -44,6 +44,7 @@ class PokemonRepository: PokemonRepositoryProtocol {
                     return
                 }
                 let count = newValue.count - self._displayables.count
+                print("count: \(count)")
                 let appendMax = newValue.suffix(count)
                 for displayable in appendMax {
                     guard let display = displayable as? PokemonDisplay, (display.coreDataObjectID == nil || !display.coreDataObjectID!.isTemporaryID) else {
@@ -51,6 +52,8 @@ class PokemonRepository: PokemonRepositoryProtocol {
                     }
                     try? self.storeService.addPokemonDisplay(display)
                 }
+                print("displayables latest: \(newValue.last?.speciesID ?? 0)")
+                print("displayables count: \(newValue.count)")
                 self._displayables = newValue
             }
         }
