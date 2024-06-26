@@ -6,11 +6,13 @@
 //
 
 import Foundation
+import UIKit
 
 class PokemonDetailPresenter {
     private let coordinator: any Pushable & Finishable
     let pokemon: PokemonDisplay
     private let repository: (any PokemonRepositoryProtocol)?
+    private(set) var maxSpeciesID: Int
     
     init(coordinatore: any Pushable & Finishable, pokemon: PokemonDisplay, pokemonRepository: (any PokemonRepositoryProtocol)?) {
         self.coordinator = coordinatore
@@ -28,15 +30,31 @@ class PokemonDetailPresenter {
         }
     }
     
-    func evolutionPokemonDisplay(for speciesID: Int) throws -> PokemonDisplay? {
-        return try pokemonStoreService?.fetchPokemonDisplay(speciesID: speciesID)
-    }
-    
-    func pushToPokemonDetail(for speciesID: Int) throws {
-        guard let evolutionPokemonDisplay = try evolutionPokemonDisplay(for: speciesID) else {
+    func updatePokemon(imageURLStr: String, image: UIImage) throws {
+        guard let display = repository?.displayables.first(where: { $0.imageURL == imageURLStr}) as? PokemonDisplay else {
             return
         }
-        coordinator.push(model: evolutionPokemonDisplay, pokemonStore: pokemonStoreService)
+        display.image = image.pngData()
+        try repository?.updatePokemonDisplay(display)
+    }
+    
+    func fetchUntilSpeciesID(_ id: Int) async throws {
+        try await repository?.loadPokemonDisplayListUntil(speciesID: id)
+    }
+    
+    func evolutionPokemonDisplay(for speciesID: Int) -> PokemonDisplay? {
+        return repository?.loadPokemonDisplay(speciesID: speciesID) as? PokemonDisplay
+    }
+    
+    func pushToPokemonDetail(for speciesID: Int) {
+        guard let evolutionPokemonDisplay = evolutionPokemonDisplay(for: speciesID) else {
+            return
+        }
+        Task {
+            await MainActor.run {
+                coordinator.push(model: evolutionPokemonDisplay, pokemonRepository: repository)
+            }
+        }
     }
     
     func finish() {

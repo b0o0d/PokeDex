@@ -52,19 +52,23 @@ class PokemonListPresenter: PokemonListProtocol, PokemonPresenterInput {
             }
         }
     }
+    
+    func deleteAll() throws {
+        try (repository.storeService as? PokemonCoreDataStoreService)?.deleteAll()
+    }
 }
 
 extension PokemonListPresenter {
     func load() async throws {
-        try await repository.loadPokemonDisplayList()
+        try await repository.loadPokemonDisplayList(limit: 0)
     }
     
     func update(_ pokemonDisplay: PokemonDisplay) throws {
-        guard let dataSource = displayables.first(where: { $0.speciesID == pokemonDisplay.speciesID }) as? PokemonDisplay else {
+        guard let source = displayables.first(where: { $0.speciesID == pokemonDisplay.speciesID }) as? PokemonDisplay else {
             return
         }
         
-        try repository.updatePokemonDisplay(pokemonDisplay)
+        try repository.updatePokemonDisplay(source)
     }
     
     func filterFavorites() {
@@ -72,7 +76,7 @@ extension PokemonListPresenter {
     }
     
     func presentDetail(_ pokemonDisplay: PokemonDisplay) {
-        coordinator.push(model: pokemonDisplay, pokemonStore: repository.storeService)
+        coordinator.push(model: pokemonDisplay, pokemonRepository: repository)
     }
     
     func sync() throws {

@@ -67,7 +67,7 @@ class PokemonDetailViewController: UIViewController {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
         setupLayout()
-        config(with: presenter.pokemon)
+        config()
     }
     
     required init?(coder: NSCoder) {
@@ -131,27 +131,69 @@ class PokemonDetailViewController: UIViewController {
         }
     }
     
-    func config(with model: PokemonDisplay) {
-        pokemonIDLabel.text = "ID: \(model.speciesID)"
-        pokemonNameLabel.text = model.name
-        if let image = model.image {
+    func config() {
+        pokemonIDLabel.text = "ID: \(presenter.pokemon.speciesID)"
+        pokemonNameLabel.text = presenter.pokemon.name
+        if let image = presenter.pokemon.image {
             imageView.image = UIImage(data: image)
         }
-        updateDescriptionTextViewHeight(text: model.flavorText.flavorText)
+        updateDescriptionTextViewHeight(text: presenter.pokemon.flavorText.flavorText)
         
-        for type in model.types {
+        for type in presenter.pokemon.types {
             let typeLabel = UILabel()
             typeLabel.text = type
             typesStackView.addArrangedSubview(typeLabel)
         }
         
-        favoriteButton.isSelected = model.isFavorite
+        favoriteButton.isSelected = presenter.pokemon.isFavorite
         favoriteButton.addTarget(self, action: #selector(favoriteButtonTapped), for: .touchUpInside)
         
-        try? drawEvolutionChain(model.evolutionChain)
+        let (isNeeded, id) = isNeededToFetchEvolutionDisplay(presenter.pokemon.evolutionChain)
+        if isNeeded {
+            Task.detached { [weak self] in
+                do {
+                    try await self?.presenter.fetchUntilSpeciesID(id)
+                    await MainActor.run { [weak self] in
+                        guard let self = self else {
+                            return
+                        }
+                        self.drawEvolutionChain(self.presenter.pokemon.evolutionChain)
+                    }
+                } catch {
+                    print(error)
+                }
+            }
+        } else {
+            drawEvolutionChain(presenter.pokemon.evolutionChain)
+        }
     }
     
-    private func drawEvolutionChain(_ evolutionChain: PokemonEvolutionChain) throws {
+    private func isNeededToFetchEvolutionDisplay(_ evolutionChain: PokemonEvolutionChain) -> (Bool, Int) {
+        var queue: Deque<PokemonEvolution> = [evolutionChain.evolvesTo]
+        // find the max speciesID
+        var maxSpeciesID = evolutionChain.evolvesTo.speciesID
+        while queue.count > 0 {
+            var count = queue.count
+            while count > 0 {
+                count -= 1
+                guard let evolution = queue.popFirst() else {
+                    continue
+                }
+                maxSpeciesID = max(maxSpeciesID, evolution.speciesID)
+                for evo in evolution.evolvesTo {
+                    queue.append(evo)
+                }
+            }
+        }
+        
+        return (maxSpeciesID > presenter.maxSpeciesID, maxSpeciesID)
+    }
+    
+    @MainActor
+    private func drawEvolutionChain(_ evolutionChain: PokemonEvolutionChain) {
+        evolutionsStackView.removeAllArrangedSubviews()
+        
+        // draw
         var queue: Deque<PokemonEvolution> = [evolutionChain.evolvesTo]
         while queue.count > 0 {
             var count = queue.count
@@ -160,7 +202,6 @@ class PokemonDetailViewController: UIViewController {
             vStackView.distribution = .fillEqually
             while count > 0 {
                 count -= 1
-                // FIXME: Currently, it's only draw the evolutions in local
                 guard let evolution = queue.popFirst() else {
                     continue
                 }
@@ -174,11 +215,25 @@ class PokemonDetailViewController: UIViewController {
                 button.layer.borderWidth = 1
                 button.layer.cornerRadius = 8
                 button.clipsToBounds = true
-                
-                if let pokemon = try? presenter.evolutionPokemonDisplay(for: evolution.speciesID), let imageData = pokemon.image {
-                    button.setImage(UIImage(data: imageData), for: .normal)
+                if let pokemon = presenter.evolutionPokemonDisplay(for: evolution.speciesID) {
+                    if let imageData = pokemon.image {
+                        button.setImage(UIImage(data: imageData), for: .normal)
+                    } else if let imageURL = pokemon.imageURL {
+                        button.sd_setImage(with: URL(string: imageURL), for: .normal) { [weak self] image, error, cacheType, url in
+                            guard let url = url, let image = image else {
+                                return
+                            }
+                            Task { [weak self] in
+                                try? self?.presenter.updatePokemon(imageURLStr:url.absoluteString, image:image)
+                            }
+                        }
+                    } else {
+                        button.setTitle(pokemon.name, for: .normal)
+                    }
+                } else {
+                    // handle disconuntinuous evolution chain
+                    button.setTitle("\(evolution.speciesID)", for: .normal)
                 }
-                
                 vStackView.addArrangedSubview(button)
             }
             if vStackView.arrangedSubviews.count > 0 {
@@ -188,7 +243,7 @@ class PokemonDetailViewController: UIViewController {
     }
     
     private func updateDescriptionTextViewHeight(text: String) {
-        var finalText = text.replacingOccurrences(of: "\n", with: " ").replacingOccurrences(of: "\r", with: " ")
+        let finalText = text.replacingOccurrences(of: "\n", with: " ").replacingOccurrences(of: "\r", with: " ")
         descriptionTextView.text = finalText
         descriptionTextView.sizeToFit()
     }
@@ -197,7 +252,7 @@ class PokemonDetailViewController: UIViewController {
         guard sender.tag != presenter.pokemon.speciesID else {
             return
         }
-        try? presenter.pushToPokemonDetail(for: sender.tag)
+        presenter.pushToPokemonDetail(for: sender.tag)
     }
     
     @objc func favoriteButtonTapped() {
