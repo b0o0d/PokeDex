@@ -37,4 +37,8 @@ class PokemonDetailPresenter {
         }
         coordinator.push(model: evolutionPokemonDisplay, pokemonStore: pokemonStoreService)
     }
+    
+    func finish() {
+        coordinator.finish()
+    }
 }

@@ -74,6 +74,10 @@ class PokemonDetailViewController: UIViewController {
         view.backgroundColor = .white
     }
     
+    deinit {
+        presenter.finish()
+    }
+    
     private func setupLayout() {
         evolutionsStackView.backgroundColor = .red
         descriptionTextView.backgroundColor = .blue
