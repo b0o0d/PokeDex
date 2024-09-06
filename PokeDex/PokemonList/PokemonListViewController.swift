@@ -77,9 +77,7 @@ class PokemonListViewController: UIViewController {
     }()
     
     @objc func deleteAllButtonTapped() {
-        Task {
-            try (presenter as? PokemonListPresenter)?.deleteAll()
-        }
+        try? (presenter as? PokemonListPresenter)?.deleteAll()
     }
     
     var presenter: PokemonPresenterInput & PokemonListProtocol

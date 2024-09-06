@@ -14,6 +14,9 @@ final class PokemonRepositoryTests: XCTestCase {
         let store = PokemonCoreDataStoreService(coreDataStack: inMemory)
         let apiClient = PokemonAPIClient()
         let sut = PokemonRepository(storeService: store, apiClient: apiClient)
+        if let store = sut.storeService as? PokemonCoreDataStoreService {
+            try? store.deleteAll()
+        }
         
         let expectation = XCTestExpectation(description: "Load Pokemon Display List")
         
