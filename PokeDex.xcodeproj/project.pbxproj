@@ -50,9 +50,9 @@
 		9FACA47B2C288B22004C8DE0 /* CoreDataPokemonEvolution+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FACA4792C288B22004C8DE0 /* CoreDataPokemonEvolution+CoreDataProperties.swift */; };
 		9FACA47D2C296124004C8DE0 /* PokemonRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FACA47C2C296124004C8DE0 /* PokemonRepository.swift */; };
 		9FACA47F2C2980E7004C8DE0 /* PokemonRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FACA47E2C2980E7004C8DE0 /* PokemonRepositoryTests.swift */; };
+		9FE2829A2D028A1C006DCA17 /* PokeDex.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9FE282982D028A1C006DCA17 /* PokeDex.xcdatamodeld */; };
 		9FF512CC2C26FF9500D88F26 /* PokemonDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF512CB2C26FF9500D88F26 /* PokemonDisplay.swift */; };
 		9FF512D02C27047300D88F26 /* PokemonDisplayAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF512CF2C27047300D88F26 /* PokemonDisplayAdapter.swift */; };
-		9FF512D62C270B0D00D88F26 /* PokeDex.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9FF512D42C270B0D00D88F26 /* PokeDex.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -116,9 +116,9 @@
 		9FACA4792C288B22004C8DE0 /* CoreDataPokemonEvolution+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreDataPokemonEvolution+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		9FACA47C2C296124004C8DE0 /* PokemonRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonRepository.swift; sourceTree = "<group>"; };
 		9FACA47E2C2980E7004C8DE0 /* PokemonRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonRepositoryTests.swift; sourceTree = "<group>"; };
+		9FE282992D028A1C006DCA17 /* PokeDex.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PokeDex.xcdatamodel; sourceTree = "<group>"; };
 		9FF512CB2C26FF9500D88F26 /* PokemonDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonDisplay.swift; sourceTree = "<group>"; };
 		9FF512CF2C27047300D88F26 /* PokemonDisplayAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonDisplayAdapter.swift; sourceTree = "<group>"; };
-		9FF512D52C270B0D00D88F26 /* PokeDex.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PokeDex.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -182,7 +182,7 @@
 				9F34A6A12C2C51C800BA9006 /* Extension */,
 				9F06B96B2C25BF2F00335721 /* AppDelegate.swift */,
 				9F06B96D2C25BF2F00335721 /* SceneDelegate.swift */,
-				9FF512D42C270B0D00D88F26 /* PokeDex.xcdatamodeld */,
+				9FE282982D028A1C006DCA17 /* PokeDex.xcdatamodeld */,
 				9F06B9742C25BF3000335721 /* Assets.xcassets */,
 				9F06B9762C25BF3000335721 /* LaunchScreen.storyboard */,
 				9F06B9792C25BF3000335721 /* Info.plist */,
@@ -500,7 +500,7 @@
 				9FF512CC2C26FF9500D88F26 /* PokemonDisplay.swift in Sources */,
 				9F06B96C2C25BF2F00335721 /* AppDelegate.swift in Sources */,
 				9FACA4612C27487D004C8DE0 /* CoreDataPokemonFlavorText+Adapter.swift in Sources */,
-				9FF512D62C270B0D00D88F26 /* PokeDex.xcdatamodeld in Sources */,
+				9FE2829A2D028A1C006DCA17 /* PokeDex.xcdatamodeld in Sources */,
 				9F34A6832C2AC57400BA9006 /* PokemonListPresenter.swift in Sources */,
 				9F34A6812C2AC0EB00BA9006 /* PokemonListViewController.swift in Sources */,
 				9FACA4632C274946004C8DE0 /* CoreDataPokemonEvolution+Adapter.swift in Sources */,
@@ -933,14 +933,13 @@
 /* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
-		9FF512D42C270B0D00D88F26 /* PokeDex.xcdatamodeld */ = {
+		9FE282982D028A1C006DCA17 /* PokeDex.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				9FF512D52C270B0D00D88F26 /* PokeDex.xcdatamodel */,
+				9FE282992D028A1C006DCA17 /* PokeDex.xcdatamodel */,
 			);
-			currentVersion = 9FF512D52C270B0D00D88F26 /* PokeDex.xcdatamodel */;
-			name = PokeDex.xcdatamodeld;
-			path = /Users/bo0od/Desktop/BoChiu/interview/2024/gogolook/Bo/PokeDex/PokeDex/PokeDex.xcdatamodeld;
+			currentVersion = 9FE282992D028A1C006DCA17 /* PokeDex.xcdatamodel */;
+			path = PokeDex.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
