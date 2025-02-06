@@ -11,7 +11,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
     
-    var appCoordinator: AppCoordinator?
+    var appCoordinator: ListCoordinator?
 
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
@@ -21,7 +21,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
         let navi = UINavigationController()
-        appCoordinator = AppCoordinator(navigationController: navi)
+        appCoordinator = ListCoordinator(navigationController: navi)
         appCoordinator?.start()
         window.backgroundColor = .white
         window.rootViewController = navi

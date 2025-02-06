@@ -8,8 +8,8 @@
 import Foundation
 
 class PokemonDetailFactory {
-    static func create(coordinator: Pushable & Finishable, model: PokemonDisplay, pokemonRepository: (any PokemonRepositoryProtocol)?) -> PokemonDetailViewController {
-        let presenter = PokemonDetailPresenter(coordinatore: coordinator, pokemon: model, pokemonRepository: pokemonRepository)
+    static func create(coordinator: PokemonDetailCoordinator, model: PokemonDisplay, pokemonRepository: (any PokemonRepositoryProtocol)?) -> PokemonDetailViewController {
+        let presenter = PokemonDetailPresenter(coordinator: coordinator, pokemon: model, pokemonRepository: pokemonRepository)
         let viewController = PokemonDetailViewController(presenter: presenter)
         return viewController
     }

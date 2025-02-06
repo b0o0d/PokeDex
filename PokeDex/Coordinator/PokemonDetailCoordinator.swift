@@ -18,7 +18,7 @@ extension Finishable {
     }
 }
 
-class PokemonDetailCoordinator: Pushable, Finishable {
+class PokemonDetailCoordinator: Finishable {
     var navigationController: UINavigationController?
     var childCoordinators: [Coordinator] = []
     var parentCoordinator: (Coordinator)?
@@ -35,5 +35,12 @@ class PokemonDetailCoordinator: Pushable, Finishable {
     func start() {
         let viewController = PokemonDetailFactory.create(coordinator: self, model: pokemonDisplay, pokemonRepository: pokemonRepository)
         navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func goToNextDetail(model: PokemonDisplay) {
+        let coordinator = PokemonDetailCoordinator(navigationController: navigationController, model: model, pokemonRepository: pokemonRepository)
+        coordinator.parentCoordinator = self
+        childCoordinators.append(coordinator)
+        coordinator.start()
     }
 }

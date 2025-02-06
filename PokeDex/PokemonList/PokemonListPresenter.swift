@@ -22,7 +22,7 @@ protocol PokemonPresenterInput {
 }
 
 class PokemonListPresenter: PokemonListProtocol, PokemonPresenterInput {
-    private let coordinator: any Pushable
+    private let coordinator: ListCoordinator
     private var repository: PokemonRepositoryProtocol
 
     weak var output: PokemonRepositoryDelegate? {
@@ -43,7 +43,7 @@ class PokemonListPresenter: PokemonListProtocol, PokemonPresenterInput {
         }
     }
     
-    init(coordinator: any Pushable, repository: PokemonRepositoryProtocol) {
+    init(coordinator: ListCoordinator, repository: PokemonRepositoryProtocol) {
         self.coordinator = coordinator
         self.repository = repository
         if displayables.isEmpty {
@@ -76,7 +76,7 @@ extension PokemonListPresenter {
     }
     
     func presentDetail(_ pokemonDisplay: PokemonDisplay) {
-        coordinator.push(model: pokemonDisplay, pokemonRepository: repository)
+        coordinator.goToDetail(model: pokemonDisplay, pokemonRepository: repository)
     }
     
     func sync() throws {

@@ -9,13 +9,13 @@ import Foundation
 import UIKit
 
 class PokemonDetailPresenter {
-    private let coordinator: any Pushable & Finishable
+    private let coordinator: PokemonDetailCoordinator
     let pokemon: PokemonDisplay
     private let repository: (any PokemonRepositoryProtocol)?
     private(set) var maxSpeciesID: Int
     
-    init(coordinatore: any Pushable & Finishable, pokemon: PokemonDisplay, pokemonRepository: (any PokemonRepositoryProtocol)?) {
-        self.coordinator = coordinatore
+    init(coordinator: PokemonDetailCoordinator, pokemon: PokemonDisplay, pokemonRepository: (any PokemonRepositoryProtocol)?) {
+        self.coordinator = coordinator
         self.pokemon = pokemon
         self.repository = pokemonRepository
         self.maxSpeciesID = repository?.displayables.last?.speciesID ?? pokemon.speciesID
@@ -52,7 +52,7 @@ class PokemonDetailPresenter {
         }
         Task {
             await MainActor.run {
-                coordinator.push(model: evolutionPokemonDisplay, pokemonRepository: repository)
+                coordinator.goToNextDetail(model: evolutionPokemonDisplay)
             }
         }
     }
